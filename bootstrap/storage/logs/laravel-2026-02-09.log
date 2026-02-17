@@ -1,0 +1,127 @@
+[2026-02-09 00:00:07] live.ERROR: Command "pos:sendSubscriptionExpiryAlert" is not defined.
+
+Did you mean one of these?
+    pos:autoClockOutUser
+    pos:autoSendPaymentReminder
+    pos:calculateStatusLoan
+    pos:createRecursiveFollowup
+    pos:dummyBusiness
+    pos:generateRecurringExpense
+    pos:generateSubscriptionInvoices
+    pos:mapPurchaseSell
+    pos:sendScheduleNotification
+    pos:smsPagoVencer
+    pos:updateRewardPoints
+    pos:WooCommerceSyncOrder
+    pos:WoocommerceSyncProducts {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"pos:sendSubscriptionExpiryAlert\" is not defined.
+
+Did you mean one of these?
+    pos:autoClockOutUser
+    pos:autoSendPaymentReminder
+    pos:calculateStatusLoan
+    pos:createRecursiveFollowup
+    pos:dummyBusiness
+    pos:generateRecurringExpense
+    pos:generateSubscriptionInvoices
+    pos:mapPurchaseSell
+    pos:sendScheduleNotification
+    pos:smsPagoVencer
+    pos:updateRewardPoints
+    pos:WooCommerceSyncOrder
+    pos:WoocommerceSyncProducts at /home/libraint/public_html/admin.librainternational.com.pe/vendor/symfony/console/Application.php:702)
+[stacktrace]
+#0 /home/libraint/public_html/admin.librainternational.com.pe/vendor/symfony/console/Application.php(256): Symfony\\Component\\Console\\Application->find()
+#1 /home/libraint/public_html/admin.librainternational.com.pe/vendor/symfony/console/Application.php(168): Symfony\\Component\\Console\\Application->doRun()
+#2 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Console/Application.php(102): Symfony\\Component\\Console\\Application->run()
+#3 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(155): Illuminate\\Console\\Application->run()
+#4 /home/libraint/public_html/admin.librainternational.com.pe/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle()
+#5 {main}
+"} 
+[2026-02-09 00:00:07] live.ERROR: Command "pos:sendSubscriptionExpiryAlert" is not defined.
+
+Did you mean one of these?
+    pos:autoClockOutUser
+    pos:autoSendPaymentReminder
+    pos:calculateStatusLoan
+    pos:createRecursiveFollowup
+    pos:dummyBusiness
+    pos:generateRecurringExpense
+    pos:generateSubscriptionInvoices
+    pos:mapPurchaseSell
+    pos:sendScheduleNotification
+    pos:smsPagoVencer
+    pos:updateRewardPoints
+    pos:WooCommerceSyncOrder
+    pos:WoocommerceSyncProducts {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"pos:sendSubscriptionExpiryAlert\" is not defined.
+
+Did you mean one of these?
+    pos:autoClockOutUser
+    pos:autoSendPaymentReminder
+    pos:calculateStatusLoan
+    pos:createRecursiveFollowup
+    pos:dummyBusiness
+    pos:generateRecurringExpense
+    pos:generateSubscriptionInvoices
+    pos:mapPurchaseSell
+    pos:sendScheduleNotification
+    pos:smsPagoVencer
+    pos:updateRewardPoints
+    pos:WooCommerceSyncOrder
+    pos:WoocommerceSyncProducts at /home/libraint/public_html/admin.librainternational.com.pe/vendor/symfony/console/Application.php:702)
+[stacktrace]
+#0 /home/libraint/public_html/admin.librainternational.com.pe/vendor/symfony/console/Application.php(256): Symfony\\Component\\Console\\Application->find()
+#1 /home/libraint/public_html/admin.librainternational.com.pe/vendor/symfony/console/Application.php(168): Symfony\\Component\\Console\\Application->doRun()
+#2 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Console/Application.php(102): Symfony\\Component\\Console\\Application->run()
+#3 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(155): Illuminate\\Console\\Application->run()
+#4 /home/libraint/public_html/admin.librainternational.com.pe/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle()
+#5 {main}
+"} 
+[2026-02-09 00:05:05] live.INFO: MiJob se ejecutó correctamente a las 2026-02-09 00:05:05  
+[2026-02-09 00:10:04] live.INFO: JOB de SMS se ejecuto correctamente el 2026-02-09 00:10:04  
+[2026-02-09 23:51:49] live.ERROR: Expected response code "250/251/252" but got code "550", with message "550 SMTP AUTH is required for message submission on port 465". {"exception":"[object] (Symfony\\Component\\Mailer\\Exception\\TransportException(code: 550): Expected response code \"250/251/252\" but got code \"550\", with message \"550 SMTP AUTH is required for message submission on port 465\". at /home/libraint/public_html/admin.librainternational.com.pe/vendor/symfony/mailer/Transport/Smtp/SmtpTransport.php:338)
+[stacktrace]
+#0 /home/libraint/public_html/admin.librainternational.com.pe/vendor/symfony/mailer/Transport/Smtp/SmtpTransport.php(201): Symfony\\Component\\Mailer\\Transport\\Smtp\\SmtpTransport->assertResponseCode()
+#1 /home/libraint/public_html/admin.librainternational.com.pe/vendor/symfony/mailer/Transport/Smtp/EsmtpTransport.php(105): Symfony\\Component\\Mailer\\Transport\\Smtp\\SmtpTransport->executeCommand()
+#2 /home/libraint/public_html/admin.librainternational.com.pe/vendor/symfony/mailer/Transport/Smtp/SmtpTransport.php(264): Symfony\\Component\\Mailer\\Transport\\Smtp\\EsmtpTransport->executeCommand()
+#3 /home/libraint/public_html/admin.librainternational.com.pe/vendor/symfony/mailer/Transport/Smtp/SmtpTransport.php(220): Symfony\\Component\\Mailer\\Transport\\Smtp\\SmtpTransport->doRcptToCommand()
+#4 /home/libraint/public_html/admin.librainternational.com.pe/vendor/symfony/mailer/Transport/AbstractTransport.php(69): Symfony\\Component\\Mailer\\Transport\\Smtp\\SmtpTransport->doSend()
+#5 /home/libraint/public_html/admin.librainternational.com.pe/vendor/symfony/mailer/Transport/Smtp/SmtpTransport.php(137): Symfony\\Component\\Mailer\\Transport\\AbstractTransport->send()
+#6 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Mail/Mailer.php(523): Symfony\\Component\\Mailer\\Transport\\Smtp\\SmtpTransport->send()
+#7 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Mail/Mailer.php(287): Illuminate\\Mail\\Mailer->sendSymfonyMessage()
+#8 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Notifications/Channels/MailChannel.php(67): Illuminate\\Mail\\Mailer->send()
+#9 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Notifications/NotificationSender.php(148): Illuminate\\Notifications\\Channels\\MailChannel->send()
+#10 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Notifications/NotificationSender.php(106): Illuminate\\Notifications\\NotificationSender->sendToNotifiable()
+#11 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Support/Traits/Localizable.php(19): Illuminate\\Notifications\\NotificationSender->Illuminate\\Notifications\\{closure}()
+#12 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Notifications/NotificationSender.php(109): Illuminate\\Notifications\\NotificationSender->withLocale()
+#13 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Notifications/NotificationSender.php(79): Illuminate\\Notifications\\NotificationSender->sendNow()
+#14 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Notifications/ChannelManager.php(39): Illuminate\\Notifications\\NotificationSender->send()
+#15 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Notifications/RoutesNotifications.php(18): Illuminate\\Notifications\\ChannelManager->send()
+#16 /home/libraint/public_html/admin.librainternational.com.pe/vendor/spatie/laravel-backup/src/Notifications/EventHandler.php(30): Spatie\\Backup\\Notifications\\Notifiable->notify()
+#17 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Events/Dispatcher.php(421): Spatie\\Backup\\Notifications\\EventHandler->Spatie\\Backup\\Notifications\\{closure}()
+#18 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Events/Dispatcher.php(249): Illuminate\\Events\\Dispatcher->Illuminate\\Events\\{closure}()
+#19 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(451): Illuminate\\Events\\Dispatcher->dispatch()
+#20 /home/libraint/public_html/admin.librainternational.com.pe/vendor/spatie/laravel-backup/src/Tasks/Backup/BackupJob.php(311): event()
+#21 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(756): Spatie\\Backup\\Tasks\\Backup\\BackupJob->Spatie\\Backup\\Tasks\\Backup\\{closure}()
+#22 /home/libraint/public_html/admin.librainternational.com.pe/vendor/spatie/laravel-backup/src/Tasks/Backup/BackupJob.php(313): rescue()
+#23 /home/libraint/public_html/admin.librainternational.com.pe/vendor/spatie/laravel-backup/src/Tasks/Backup/BackupJob.php(296): Spatie\\Backup\\Tasks\\Backup\\BackupJob->sendNotification()
+#24 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Collections/Traits/EnumeratesValues.php(235): Spatie\\Backup\\Tasks\\Backup\\BackupJob->Spatie\\Backup\\Tasks\\Backup\\{closure}()
+#25 /home/libraint/public_html/admin.librainternational.com.pe/vendor/spatie/laravel-backup/src/Tasks/Backup/BackupJob.php(304): Illuminate\\Support\\Collection->each()
+#26 /home/libraint/public_html/admin.librainternational.com.pe/vendor/spatie/laravel-backup/src/Tasks/Backup/BackupJob.php(168): Spatie\\Backup\\Tasks\\Backup\\BackupJob->copyToBackupDestinations()
+#27 /home/libraint/public_html/admin.librainternational.com.pe/vendor/spatie/laravel-backup/src/Commands/BackupCommand.php(58): Spatie\\Backup\\Tasks\\Backup\\BackupJob->run()
+#28 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Spatie\\Backup\\Commands\\BackupCommand->handle()
+#29 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Container/Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#30 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure()
+#31 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(37): Illuminate\\Container\\BoundMethod::callBoundMethod()
+#32 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Container/Container.php(661): Illuminate\\Container\\BoundMethod::call()
+#33 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call()
+#34 /home/libraint/public_html/admin.librainternational.com.pe/vendor/symfony/console/Command/Command.php(312): Illuminate\\Console\\Command->execute()
+#35 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Console/Command.php(153): Symfony\\Component\\Console\\Command\\Command->run()
+#36 /home/libraint/public_html/admin.librainternational.com.pe/vendor/spatie/laravel-backup/src/Commands/BaseCommand.php(28): Illuminate\\Console\\Command->run()
+#37 /home/libraint/public_html/admin.librainternational.com.pe/vendor/symfony/console/Application.php(1022): Spatie\\Backup\\Commands\\BaseCommand->run()
+#38 /home/libraint/public_html/admin.librainternational.com.pe/vendor/symfony/console/Application.php(314): Symfony\\Component\\Console\\Application->doRunCommand()
+#39 /home/libraint/public_html/admin.librainternational.com.pe/vendor/symfony/console/Application.php(168): Symfony\\Component\\Console\\Application->doRun()
+#40 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Console/Application.php(102): Symfony\\Component\\Console\\Application->run()
+#41 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(155): Illuminate\\Console\\Application->run()
+#42 /home/libraint/public_html/admin.librainternational.com.pe/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle()
+#43 {main}
+"} 

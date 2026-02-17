@@ -1,0 +1,247 @@
+[2026-02-17 00:00:08] live.ERROR: Command "pos:sendSubscriptionExpiryAlert" is not defined.
+
+Did you mean one of these?
+    pos:autoClockOutUser
+    pos:autoSendPaymentReminder
+    pos:calculateStatusLoan
+    pos:createRecursiveFollowup
+    pos:dummyBusiness
+    pos:exchangerate
+    pos:generateRecurringExpense
+    pos:generateSubscriptionInvoices
+    pos:mapPurchaseSell
+    pos:sendScheduleNotification
+    pos:smsPagoVencer
+    pos:updateRewardPoints
+    pos:WooCommerceSyncOrder
+    pos:WoocommerceSyncProducts {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"pos:sendSubscriptionExpiryAlert\" is not defined.
+
+Did you mean one of these?
+    pos:autoClockOutUser
+    pos:autoSendPaymentReminder
+    pos:calculateStatusLoan
+    pos:createRecursiveFollowup
+    pos:dummyBusiness
+    pos:exchangerate
+    pos:generateRecurringExpense
+    pos:generateSubscriptionInvoices
+    pos:mapPurchaseSell
+    pos:sendScheduleNotification
+    pos:smsPagoVencer
+    pos:updateRewardPoints
+    pos:WooCommerceSyncOrder
+    pos:WoocommerceSyncProducts at /home/libraint/public_html/admin.librainternational.com.pe/vendor/symfony/console/Application.php:702)
+[stacktrace]
+#0 /home/libraint/public_html/admin.librainternational.com.pe/vendor/symfony/console/Application.php(256): Symfony\\Component\\Console\\Application->find()
+#1 /home/libraint/public_html/admin.librainternational.com.pe/vendor/symfony/console/Application.php(168): Symfony\\Component\\Console\\Application->doRun()
+#2 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Console/Application.php(102): Symfony\\Component\\Console\\Application->run()
+#3 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(155): Illuminate\\Console\\Application->run()
+#4 /home/libraint/public_html/admin.librainternational.com.pe/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle()
+#5 {main}
+"} 
+[2026-02-17 00:00:09] live.ERROR: Command "pos:sendSubscriptionExpiryAlert" is not defined.
+
+Did you mean one of these?
+    pos:autoClockOutUser
+    pos:autoSendPaymentReminder
+    pos:calculateStatusLoan
+    pos:createRecursiveFollowup
+    pos:dummyBusiness
+    pos:exchangerate
+    pos:generateRecurringExpense
+    pos:generateSubscriptionInvoices
+    pos:mapPurchaseSell
+    pos:sendScheduleNotification
+    pos:smsPagoVencer
+    pos:updateRewardPoints
+    pos:WooCommerceSyncOrder
+    pos:WoocommerceSyncProducts {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"pos:sendSubscriptionExpiryAlert\" is not defined.
+
+Did you mean one of these?
+    pos:autoClockOutUser
+    pos:autoSendPaymentReminder
+    pos:calculateStatusLoan
+    pos:createRecursiveFollowup
+    pos:dummyBusiness
+    pos:exchangerate
+    pos:generateRecurringExpense
+    pos:generateSubscriptionInvoices
+    pos:mapPurchaseSell
+    pos:sendScheduleNotification
+    pos:smsPagoVencer
+    pos:updateRewardPoints
+    pos:WooCommerceSyncOrder
+    pos:WoocommerceSyncProducts at /home/libraint/public_html/admin.librainternational.com.pe/vendor/symfony/console/Application.php:702)
+[stacktrace]
+#0 /home/libraint/public_html/admin.librainternational.com.pe/vendor/symfony/console/Application.php(256): Symfony\\Component\\Console\\Application->find()
+#1 /home/libraint/public_html/admin.librainternational.com.pe/vendor/symfony/console/Application.php(168): Symfony\\Component\\Console\\Application->doRun()
+#2 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Console/Application.php(102): Symfony\\Component\\Console\\Application->run()
+#3 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(155): Illuminate\\Console\\Application->run()
+#4 /home/libraint/public_html/admin.librainternational.com.pe/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle()
+#5 {main}
+"} 
+[2026-02-17 00:05:06] live.INFO: MiJob se ejecutó correctamente a las 2026-02-17 00:05:06  
+[2026-02-17 00:10:04] live.INFO: JOB de SMS se ejecuto correctamente el 2026-02-17 00:10:04  
+[2026-02-17 00:15:05] live.INFO: TIPO DE CAMBIO CREADO CON EXITO EL: 2026-02-17 00:15:05  
+[2026-02-17 16:11:47] live.ERROR: htmlspecialchars(): Argument #1 ($string) must be of type string, array given {"view":{"view":"/home/libraint/public_html/admin.librainternational.com.pe/resources/views/product/partials/single_product_details.blade.php","data":[]},"userId":25,"exception":"[object] (Spatie\\LaravelIgnition\\Exceptions\\ViewException(code: 0): htmlspecialchars(): Argument #1 ($string) must be of type string, array given at /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Support/helpers.php:123)
+[stacktrace]
+#0 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Support/helpers.php(123): htmlspecialchars()
+#1 /home/libraint/public_html/admin.librainternational.com.pe/resources/views/product/partials/single_product_details.blade.php(50): e()
+#2 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(109): require('/home/libraint/...')
+#3 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(110): Illuminate\\Filesystem\\Filesystem::Illuminate\\Filesystem\\{closure}()
+#4 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(58): Illuminate\\Filesystem\\Filesystem->getRequire()
+#5 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/View/Engines/CompilerEngine.php(70): Illuminate\\View\\Engines\\PhpEngine->evaluatePath()
+#6 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/View/View.php(195): Illuminate\\View\\Engines\\CompilerEngine->get()
+#7 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/View/View.php(178): Illuminate\\View\\View->getContents()
+#8 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/View/View.php(147): Illuminate\\View\\View->renderContents()
+#9 /home/libraint/public_html/admin.librainternational.com.pe/resources/views/product/view-modal.blade.php(159): Illuminate\\View\\View->render()
+#10 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(109): require('/home/libraint/...')
+#11 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(110): Illuminate\\Filesystem\\Filesystem::Illuminate\\Filesystem\\{closure}()
+#12 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(58): Illuminate\\Filesystem\\Filesystem->getRequire()
+#13 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/View/Engines/CompilerEngine.php(70): Illuminate\\View\\Engines\\PhpEngine->evaluatePath()
+#14 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/View/View.php(195): Illuminate\\View\\Engines\\CompilerEngine->get()
+#15 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/View/View.php(178): Illuminate\\View\\View->getContents()
+#16 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/View/View.php(147): Illuminate\\View\\View->renderContents()
+#17 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Http/Response.php(69): Illuminate\\View\\View->render()
+#18 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Http/Response.php(35): Illuminate\\Http\\Response->setContent()
+#19 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Routing/Router.php(906): Illuminate\\Http\\Response->__construct()
+#20 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Routing/Router.php(875): Illuminate\\Routing\\Router::toResponse()
+#21 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Routing/Router.php(798): Illuminate\\Routing\\Router->prepareResponse()
+#22 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}()
+#23 /home/libraint/public_html/admin.librainternational.com.pe/app/Http/Middleware/CheckUserLogin.php(22): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#24 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\CheckUserLogin->handle()
+#25 /home/libraint/public_html/admin.librainternational.com.pe/app/Http/Middleware/AdminSidebarMenu.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#26 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\AdminSidebarMenu->handle()
+#27 /home/libraint/public_html/admin.librainternational.com.pe/app/Http/Middleware/Timezone.php(30): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#28 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\Timezone->handle()
+#29 /home/libraint/public_html/admin.librainternational.com.pe/app/Http/Middleware/Language.php(25): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#30 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\Language->handle()
+#31 /home/libraint/public_html/admin.librainternational.com.pe/app/Http/Middleware/SetSessionData.php(52): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#32 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\SetSessionData->handle()
+#33 /home/libraint/public_html/admin.librainternational.com.pe/app/Http/Middleware/IsInstalled.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#34 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\IsInstalled->handle()
+#35 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#36 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle()
+#37 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Auth/Middleware/Authenticate.php(44): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#38 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Auth\\Middleware\\Authenticate->handle()
+#39 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/VerifyCsrfToken.php(78): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#40 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken->handle()
+#41 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#42 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle()
+#43 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(121): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#44 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest()
+#45 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Session\\Middleware\\StartSession->handle()
+#46 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#47 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle()
+#48 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(67): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#49 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle()
+#50 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#51 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Routing/Router.php(799): Illuminate\\Pipeline\\Pipeline->then()
+#52 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Routing/Router.php(776): Illuminate\\Routing\\Router->runRouteWithinStack()
+#53 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Routing/Router.php(740): Illuminate\\Routing\\Router->runRoute()
+#54 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Routing/Router.php(729): Illuminate\\Routing\\Router->dispatchToRoute()
+#55 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(190): Illuminate\\Routing\\Router->dispatch()
+#56 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}()
+#57 /home/libraint/public_html/admin.librainternational.com.pe/vendor/barryvdh/laravel-debugbar/src/Middleware/InjectDebugbar.php(59): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#58 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Barryvdh\\Debugbar\\Middleware\\InjectDebugbar->handle()
+#59 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#60 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#61 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle()
+#62 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#63 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#64 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle()
+#65 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#66 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle()
+#67 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#68 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle()
+#69 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#70 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\HandleCors->handle()
+#71 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#72 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\TrustProxies->handle()
+#73 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#74 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then()
+#75 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter()
+#76 /home/libraint/public_html/admin.librainternational.com.pe/public/index.php(52): Illuminate\\Foundation\\Http\\Kernel->handle()
+#77 {main}
+
+[previous exception] [object] (TypeError(code: 0): htmlspecialchars(): Argument #1 ($string) must be of type string, array given at /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Support/helpers.php:123)
+[stacktrace]
+#0 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Support/helpers.php(123): htmlspecialchars()
+#1 /home/libraint/public_html/admin.librainternational.com.pe/storage/framework/views/4a866bc7036fb4c3a1b51dcc086d528c3bbd9040.php(51): e()
+#2 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(109): require('/home/libraint/...')
+#3 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(110): Illuminate\\Filesystem\\Filesystem::Illuminate\\Filesystem\\{closure}()
+#4 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(58): Illuminate\\Filesystem\\Filesystem->getRequire()
+#5 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/View/Engines/CompilerEngine.php(70): Illuminate\\View\\Engines\\PhpEngine->evaluatePath()
+#6 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/View/View.php(195): Illuminate\\View\\Engines\\CompilerEngine->get()
+#7 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/View/View.php(178): Illuminate\\View\\View->getContents()
+#8 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/View/View.php(147): Illuminate\\View\\View->renderContents()
+#9 /home/libraint/public_html/admin.librainternational.com.pe/storage/framework/views/afb0785658936b12d6a69a503343e650dfd5cf5d.php(168): Illuminate\\View\\View->render()
+#10 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(109): require('/home/libraint/...')
+#11 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(110): Illuminate\\Filesystem\\Filesystem::Illuminate\\Filesystem\\{closure}()
+#12 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(58): Illuminate\\Filesystem\\Filesystem->getRequire()
+#13 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/View/Engines/CompilerEngine.php(70): Illuminate\\View\\Engines\\PhpEngine->evaluatePath()
+#14 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/View/View.php(195): Illuminate\\View\\Engines\\CompilerEngine->get()
+#15 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/View/View.php(178): Illuminate\\View\\View->getContents()
+#16 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/View/View.php(147): Illuminate\\View\\View->renderContents()
+#17 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Http/Response.php(69): Illuminate\\View\\View->render()
+#18 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Http/Response.php(35): Illuminate\\Http\\Response->setContent()
+#19 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Routing/Router.php(906): Illuminate\\Http\\Response->__construct()
+#20 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Routing/Router.php(875): Illuminate\\Routing\\Router::toResponse()
+#21 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Routing/Router.php(798): Illuminate\\Routing\\Router->prepareResponse()
+#22 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}()
+#23 /home/libraint/public_html/admin.librainternational.com.pe/app/Http/Middleware/CheckUserLogin.php(22): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#24 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\CheckUserLogin->handle()
+#25 /home/libraint/public_html/admin.librainternational.com.pe/app/Http/Middleware/AdminSidebarMenu.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#26 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\AdminSidebarMenu->handle()
+#27 /home/libraint/public_html/admin.librainternational.com.pe/app/Http/Middleware/Timezone.php(30): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#28 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\Timezone->handle()
+#29 /home/libraint/public_html/admin.librainternational.com.pe/app/Http/Middleware/Language.php(25): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#30 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\Language->handle()
+#31 /home/libraint/public_html/admin.librainternational.com.pe/app/Http/Middleware/SetSessionData.php(52): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#32 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\SetSessionData->handle()
+#33 /home/libraint/public_html/admin.librainternational.com.pe/app/Http/Middleware/IsInstalled.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#34 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\IsInstalled->handle()
+#35 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#36 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle()
+#37 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Auth/Middleware/Authenticate.php(44): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#38 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Auth\\Middleware\\Authenticate->handle()
+#39 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/VerifyCsrfToken.php(78): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#40 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken->handle()
+#41 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#42 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle()
+#43 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(121): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#44 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest()
+#45 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Session\\Middleware\\StartSession->handle()
+#46 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#47 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle()
+#48 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(67): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#49 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle()
+#50 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#51 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Routing/Router.php(799): Illuminate\\Pipeline\\Pipeline->then()
+#52 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Routing/Router.php(776): Illuminate\\Routing\\Router->runRouteWithinStack()
+#53 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Routing/Router.php(740): Illuminate\\Routing\\Router->runRoute()
+#54 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Routing/Router.php(729): Illuminate\\Routing\\Router->dispatchToRoute()
+#55 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(190): Illuminate\\Routing\\Router->dispatch()
+#56 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}()
+#57 /home/libraint/public_html/admin.librainternational.com.pe/vendor/barryvdh/laravel-debugbar/src/Middleware/InjectDebugbar.php(59): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#58 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Barryvdh\\Debugbar\\Middleware\\InjectDebugbar->handle()
+#59 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#60 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#61 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle()
+#62 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#63 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#64 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle()
+#65 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#66 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle()
+#67 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#68 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle()
+#69 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#70 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\HandleCors->handle()
+#71 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#72 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\TrustProxies->handle()
+#73 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#74 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then()
+#75 /home/libraint/public_html/admin.librainternational.com.pe/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter()
+#76 /home/libraint/public_html/admin.librainternational.com.pe/public/index.php(52): Illuminate\\Foundation\\Http\\Kernel->handle()
+#77 {main}
+"} 

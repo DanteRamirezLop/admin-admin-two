@@ -1,0 +1,32 @@
+<?php
+
+return [
+    'name'=>'Quotes',
+    'PRODUCT_TIPE'=>'Product Type',
+    'MULTIPLIER'=>'Multiplier',
+    'RATE'=>'Rate',
+    'AMOUNT'=>'Amount',
+    'ADMIN_FEE'=>'Admin FEE',
+    'PAYBACK_AMOUNT'=>'Payback amount',
+    'add_unit' => 'Add Unit',
+    'edit_unit' => 'Edit Unit',
+    'proposal'=>'Propuesta',
+    'Quote_of'=>'Quote of',
+    'manage_your_quotes' => 'Manage your quotes',
+    'all_your_quotes' => 'All your Quotes',
+    'REFRENCE'=>'REFRENCE #',
+    'deleted_success' => 'Quote deleted successfully',
+    'edit_quote'=>'Edit quote',
+    'number_month'=>'# Months',
+    'period'=>'Period',
+    'day'=>'Daily',
+    'week'=>'Weekly',
+    'month'=>'Monthly',
+	'biweekly'=>'Biweekly',
+	
+	'check_amount'=>'Check Amount',
+    'interesarte_rate'=>'Interesarte Rate (%)',
+    'filling_fee'=>'Filling Fee (4%)',
+    'total_interest' =>'Total interest',
+    'loan_amount'=>'Loan Amount',
+];
