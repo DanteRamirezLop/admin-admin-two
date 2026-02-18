@@ -103,6 +103,9 @@
                 </div>
                 @endcomponent
             </div>
+
+
+            
             
             @if($annexes)
                 <div class="col-lg-12">
@@ -226,15 +229,40 @@
 
         //cambios de Soles a dolares
         $(document).on('change', '.currency_types_dropdown', function(e) {
+            console.log('CHANGE');
+
             var payment_type = $('#transaction_payment_add_form .currency_types_dropdown').val();
             calculate_dollars = $('#calculate_dollars');
             amount = $('#amount');
-            if(payment_type == 'Dolar'){
-                calculate_dollars.addClass('hide');
-                amount.prop('readonly', false);
-            }else{
-                 calculate_dollars.removeClass('hide');
-                 amount.prop('readonly', true);
+            // var is_pay_regulate = $('input[name="optionPay"]:checked').val();
+            // if(is_pay_regulate == 1 ){
+                if(payment_type == 'Dolar'){
+                    calculate_dollars.addClass('hide');
+                    amount.prop('readonly', false);
+                }else{
+                    calculate_dollars.removeClass('hide');
+                    amount.prop('readonly', true);
+                }
+            // }else{
+            //     amount.prop('readonly', true);
+            //     if(payment_type == 'Dolar'){
+            //         calculate_dollars.addClass('hide');
+            //     }else{
+            //         calculate_dollars.removeClass('hide');
+            //     }
+            // }
+
+        });
+
+         $(document).on('change', 'input[type=radio][name=optionPay]', function(e) {
+            if ($(this).val() == 1) {
+                //$(".regular_payment").removeClass('hide');
+                $("#prepayment").addClass('hide');
+               
+            } else {
+                //$(".regular_payment").addClass('hide');
+                $("#prepayment").removeClass('hide');
+                // $('#amount').prop('readonly', true); 
             }
         });
 
@@ -260,13 +288,9 @@
                 $('#resultado').text('Por favor ingresa valores válidos.');
                 return;
             }
-            console.log(amount);
-            console.log(exchangeRate);
             const soles = amount * exchangeRate;
             $('#amount_var').val(soles.toFixed(2));
         });
-
-
 
         $(document).on('click', '#calculate', function(e) {
             const exchangeRate = parseFloat($('#exchange_rate').val());
@@ -284,13 +308,6 @@
             if (!_.isUndefined($('#transaction_payment_add_form #default_payment_accounts').val())) {
                 default_accounts = JSON.parse($('#transaction_payment_add_form #default_payment_accounts').val());
             }
-            // var payment_type = $('#transaction_payment_add_form .payment_types_dropdown').val();
-            // if (payment_type && payment_type != 'advance') {
-            //     var default_account = !_.isEmpty(default_accounts) && default_accounts[payment_type]['account'] ? 
-            //         default_accounts[payment_type]['account'] : '';
-            //     $('#transaction_payment_add_form #account_id').val(default_account);
-            //     $('#transaction_payment_add_form #account_id').change();
-            // }
         }
 
         //Accion de ocultar
@@ -331,6 +348,7 @@
 
         $(document).ready(function () {
             $("#update-btn").on('click', function () {
+                console.log('boton 1111');
                 let id = $(this).data('id');
                 swal({
                     title: "Estás seguro?",
@@ -356,6 +374,5 @@
                 });
             });
         });
-
     </script>
 @endsection

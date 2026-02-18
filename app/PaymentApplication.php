@@ -17,6 +17,8 @@ class PaymentApplication extends Model
         'amount',
         'amount_discounted',
         'applied_at',
+        'days_in_advance',
+        'payment_schedule_id',
     ];
 
     public function loan()

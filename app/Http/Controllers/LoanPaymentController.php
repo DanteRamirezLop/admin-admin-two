@@ -25,6 +25,7 @@ use App\Business;
 use App\Events\TransactionPaymentAdded;
 use App\ScheduleVersion;
 use App\PaymentApplication;
+use App\ExchangeRates;
 
 
 class LoanPaymentController extends Controller
@@ -58,6 +59,7 @@ class LoanPaymentController extends Controller
     public function store(Request $request){
         
         try {
+            $type_pay = $request->input('optionPay') ? $request->input('optionPay') : 1;//Tipo de pago 1 regular y 2 pago adelantado
             $payment_shedule = PaymentSchedule::find($request->payment_schedule_id);
             $mount_quota = $payment_shedule->mount_quota;//Cantidad de la letra que se tiene que pagar
             $gps_quota = $payment_shedule->gps_quota; 
@@ -66,7 +68,6 @@ class LoanPaymentController extends Controller
             $initial = $payment_shedule->initial;
             $mount_quota_total = $mount_quota + $gps_quota + $sure_quota + $initial + $admin_fee_quota;
             //Calcular el monto que falta pagar
-            $note = '';
             $amount_paid = 0; //Monto ya pagado
             $transactionPayments = TransactionPayment::where('payment_schedule_id', $request->payment_schedule_id)->get();
             if($transactionPayments){
@@ -75,8 +76,16 @@ class LoanPaymentController extends Controller
                 }
             }
             $missing_amount = round($mount_quota_total - $amount_paid,2);// Cantidad que falta pagar
-
             $amount = $this->transactionUtil->num_uf($request->amount); //cantidad que se está pagando
+            //nota
+            $note = "";
+            $note .= $request->input('note');
+            if($type_pay == 2){
+                $days_in_advance = $request->input('days_in_advance');
+                $interestSaved =   ($amount * 0.00111) * $days_in_advance;
+                $note .= 'Por pago adelantado de se '.$days_in_advance.' días está ahorrando '. number_format($interestSaved,2) .'. ';
+            }
+
             //El monto a pagar no puede ser superior a la cuota 
             if( round($amount,2) <= round($missing_amount,2)){
                 // metodo de pago
@@ -86,10 +95,10 @@ class LoanPaymentController extends Controller
                 }
                 //Si es Soles
                 if($request->currency !='Dolar'){
-                    $note = $request->amount_var.' '. $request->currency.' con tipo de cambio '. $request->exchange_rate.'. ';
+                    //pago adelantado
+                    $note .= 'Se pago '.$request->amount_var.' '. $request->currency.' con tipo de cambio '. $request->exchange_rate.'. ';
                 }
-                $note .= $request->note;
-                
+            
                 //fecha de pago
                 if($request->paid_on){
                     $paid_on = $this->transactionUtil->uf_date($request->input('paid_on'), true);
@@ -121,9 +130,33 @@ class LoanPaymentController extends Controller
                         'created_by' => $loan->user_id,
                         'transaction_id' => $transaction->id,
                         'transaction_payment_id' =>  $transactionPaymentNew->id,
-                        
                     ];
                     AccountTransaction::createAccountTransaction($account_transaction_data);
+                }
+
+                //REGISTRAR SI ES UN PAGO ADELANTADO
+                if($type_pay == 2){
+
+
+                    //$days_period = $this->daysInPeriod($payment_shedule, $loan->date);
+                    //$interestSaved =  $this->transactionUtil->getDiscountPayAvance($days_period, $days_in_advance,$payment_shedule->interests);
+                    //REGISTRAR EL DESCUENTO EN LA TRANSACCION
+                    $transaction->discount_type = 'fixed';
+                    $transaction->discount_amount =  $transaction->discount_amount + $interestSaved;
+                    $transaction->final_total = $transaction->final_total - $interestSaved;
+                    $transaction->save();
+                    //REGISTRAR LA APLICACION DEL PAGO A CAPITAL
+                    $paymentApplication = PaymentApplication::create([
+                        'loan_id' =>  $payment_shedule->loan_id,
+                        'transaction_id'=> $transaction->id,
+                        'transaction_payment_id' => $transactionPaymentNew->id,
+                        'payment_schedule_id' => $payment_shedule->id,
+                        'concept' => 'Pago adelantado de una letra',
+                        'amount' => $amount,
+                        'amount_discounted' => $interestSaved,// El descuento es por pago adelantado
+                        'days_in_advance' =>  $days_in_advance,
+                        'applied_at' => Carbon::now(),
+                    ]);
                 }
                 //--------Cambiar el estado de la cuota a pagado o paga_parcial
                 if(round($amount,2) == round($missing_amount,2)){
@@ -143,8 +176,9 @@ class LoanPaymentController extends Controller
                     'msg' => $msg,
                 ];
             }
-        } catch (\Exception $e) {
+        } catch (\Exception $th) {
             DB::rollBack();
+            \Log::emergency('ERROR PAGO:'.$th->getMessage().''.' IN FILE:'.$th->getFile().' LINE:'.$th->getLine());
             $msg = __('messages.something_went_wrong');
             $output = ['success' => false,
                 'msg' => $msg,
@@ -530,39 +564,6 @@ class LoanPaymentController extends Controller
 
 
             DB::commit();
-
-
-           
-            //$phones = "+51944135199,+51904428497,+51991290234";
-
-            //if($numeros){ 
-               // $phones = implode(',', $numeros);
-
-                //     //Envio de mensaje SMS a los clientes
-                //     try {
-                //         $data = [];
-                //         $business = Business::find(4);//Codifo de la empresa en duro
-                //         $data['sms_settings'] = $business->sms_settings ?? [];
-                //         $data['mobile_number'] = $phones;
-                //         $data['sms_body'] = "Hola! XCMG Libra International te recuerda que tienes una deuda vencida.";
-                //         $this->notificationUtil->sendSms($data);
-                 //       Log::info('Se envio los menesajes de texto ' . now());
-                //     } catch (\Exception $e) {
-                //         \Log::emergency('File:'.$e->getFile().'Line:'.$e->getLine().'Message:'.$e->getMessage());
-                //     }
-                // }
-                // //Envio de mensaje a nuestro correo electronico para recordar la mora de los clientes
-                // if($customers){
-                //     try {
-                //         $correo = new NotificacionPrestamoLibra($customers);
-                //         $addressee = ['informes@librainternational.com.pe','mdios@librainternational.com.pe'];
-                //         Mail::to($addressee)->send($correo);
-                 //      Log::info('Se enviaron los correos electronicos' . now());
-                //     } catch (\Exception $mailException) {
-                //       \Log::emergency('Si se realizo El calculo de la mora, pero hay un Error al enviar correo: ' . $mailException->getMessage());
-                //       exit($mailException->getMessage());
-                //     }
-            
             Log::info('MiJob se ejecutó correctamente a las ' . now());
 
         } catch (\Exception $e) {
@@ -572,6 +573,30 @@ class LoanPaymentController extends Controller
         }
 
     }
+
+    //  private function daysInPeriod(PaymentSchedule $current, string $loanStartDate){
+
+    //     $prev = PaymentSchedule::where('loan_id', $current->loan_id)
+    //     ->where('schedule_version_id', $current->schedule_version_id) // si usas versiones
+    //     ->where('number_quota', '<', $current->number_quota)
+    //     ->orderBy('number_quota', 'desc')
+    //     ->first();
+
+    //     $prevScheduledDate = $prev?->scheduled_date;
+    //     $scheduledDate = $current->sheduled_date;
+
+    //     $end = Carbon::parse($scheduledDate)->startOfDay();
+    //     if ($prevScheduledDate) {
+    //         $start = Carbon::parse($prevScheduledDate)->startOfDay();
+    //     } else {
+    //         $start = Carbon::parse($loanStartDate)->startOfDay();
+    //     }
+
+    //     // Días entre inicio (exclusivo) y fin (inclusive para devengo típico)
+    //     // En la práctica bancaria suele bastar diffInDays().
+    //     return max(1, $start->diffInDays($end));
+    // }
+
 
 }
 

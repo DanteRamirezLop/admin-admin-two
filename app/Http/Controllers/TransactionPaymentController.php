@@ -166,7 +166,7 @@ class TransactionPaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+     public function show($id)
     {
         if (! (auth()->user()->can('sell.payments') || auth()->user()->can('purchase.payments'))) {
             abort(403, 'Unauthorized action.');
@@ -320,7 +320,7 @@ class TransactionPaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+     public function destroy($id)
     {
         if (! auth()->user()->can('delete_purchase_payment') && ! auth()->user()->can('delete_sell_payment') && ! auth()->user()->can('all_expense.access') && ! auth()->user()->can('view_own_expense')) {
             abort(403, 'Unauthorized action.');
@@ -331,13 +331,28 @@ class TransactionPaymentController extends Controller
                 $payment = TransactionPayment::findOrFail($id);
                 DB::beginTransaction();
 
-                $there_is_pay_capital =  PaymentApplication::where('transaction_id',$payment->transaction_id)->exists();
+                // Eliminar pago a capital
+                $there_is_pay_capital =  PaymentApplication::where('transaction_id',$payment->transaction_id)->whereNull('payment_schedule_id')->exists();
                 if($there_is_pay_capital){
                     $output = ['success' => false,'msg' => 'Por ahora no se puede eliminar un pago a capital'];
                     return $output;
                 }
 
-                //Elininar pagos relacionados a una letra
+                //Eliminar pagos adelantado si es que lo tenga
+                $is_prepayment = PaymentApplication::where('transaction_id',$payment->transaction_id)->where('payment_schedule_id',$payment->payment_schedule_id)->exists();
+                if(!empty($is_prepayment)){
+                    $payment_application =  PaymentApplication::where('transaction_id',$payment->transaction_id)->where('payment_schedule_id',$payment->payment_schedule_id)->first();
+                    $interestSaved = $payment_application->amount_discounted;
+
+                    $transaction = Transaction::find($payment->transaction_id);
+                    $transaction->discount_amount =  $transaction->discount_amount - $interestSaved;
+                    $transaction->final_total = $transaction->final_total + $interestSaved;
+                    $transaction->save();
+
+                    $payment_application->delete();
+                }
+
+                //Eliminar pagos relacionados a una letra
                 if (! empty($payment->payment_schedule_id)) {
                     $amount = 0.00;
                     $tranasctionAuxs = TransactionPayment::where('payment_schedule_id',$payment->payment_schedule_id)->get();
@@ -356,6 +371,7 @@ class TransactionPaymentController extends Controller
                         $payment_schedule->save();
                     }
                 }
+
                 //Si el pago esta relacionado a una mora, eliminar la mora tambien
                 if(! empty($payment->delay_id)){
                     //Reducir la mora eliminada del total de la transaccion
@@ -370,6 +386,8 @@ class TransactionPaymentController extends Controller
                     $payment->save();
                 }
 
+
+                //ELIMINACION DE LA TRANSACCION PROPIAMENTE DICHA 
                 if (! empty($payment->transaction_id)) {
                     //Eliminacion de pago normal
                     TransactionPayment::deletePayment($payment);
@@ -403,15 +421,13 @@ class TransactionPaymentController extends Controller
         }
     }
 
-    
-    
-
     /**
      * Adds new payment to the given transaction.
      *
      * @param  int  $transaction_id
      * @return \Illuminate\Http\Response
      */
+
     public function addPayment($transaction_id)
     {
         if (! auth()->user()->can('purchase.payments') && ! auth()->user()->can('sell.payments') && ! auth()->user()->can('all_expense.access') && ! auth()->user()->can('view_own_expense')) {

@@ -33,6 +33,13 @@ use App\ScheduleVersion;
 class TransactionUtil extends Util
 {
 
+    // public function getDiscountPayAvance(int $days_period,int $days_in_advance, float $interests){
+    //     $diasAdelantados = max(0, min($days_in_advance, $days_period)); // clamp
+    //     $discountInterests = $interests * ($diasAdelantados / $days_period);
+    //     return $discountInterests;
+    // }
+
+
     public function regeneratePaymentSchedule( int $loanId, int $fromVersionId, int $toVersionId, float $capitalPayment, $type_pay)
     { 
         $fromVersionId = $fromVersionId ? $fromVersionId : NULL;

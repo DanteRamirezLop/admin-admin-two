@@ -28,6 +28,7 @@ use App\TransactionPayment;
 use App\InvoiceScheme;
 use App\ScheduleVersion;
 use App\PaymentApplication;
+use App\ExchangeRates;
 
 class LoanController extends Controller
 {
@@ -788,8 +789,13 @@ class LoanController extends Controller
     }
 
 
-    public function addPayment($payment_schedules_id){
+  public function addPayment($payment_schedules_id){
         if (request()->ajax()) {
+            //busco el tipo de cambio del dia
+            $search_date = Carbon::now()->format('Y-m-d');
+            $exchange_rates = ExchangeRates::where('search_date',$search_date)->first();
+            $exchange_rates = $exchange_rates ? $exchange_rates : 1;
+            
             $payment_schedule = PaymentSchedule::findOrFail($payment_schedules_id);
             if ($payment_schedule->payment_status != 'paid') {
                 $business_id = request()->session()->get('user.business_id');
@@ -800,7 +806,7 @@ class LoanController extends Controller
                 //Buscar el metodo de pago vinculado al PaymentShadule y restarlo al monto total 
                 $amount = $this->transactionUtil->amountToPay($payment_schedule);
                 $paid_on = Carbon::now()->toDateTimeString();
-                $view = view('loan.payment_row')->with(compact('payment_schedule','amount','paid_on','payment_types','accounts'))->render();
+                $view = view('loan.payment_row')->with(compact('exchange_rates','payment_schedule','amount','paid_on','payment_types','accounts'))->render();
                 $output = ['status' => 'due','view' => $view, ];
             } else {
                 $output = ['status' => 'paid','view' => '','msg' => __('purchase.amount_already_paid'),  ];

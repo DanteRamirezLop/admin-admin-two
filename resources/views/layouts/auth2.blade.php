@@ -20,7 +20,7 @@
     <![endif]-->
 	
 	<!-- Codigos de reCAPTCHA V3-->
-        <script src="https://www.google.com/recaptcha/api.js"></script>
+        
     <!-- FIN reCAPTCHA-->
 </head>
 
@@ -78,7 +78,7 @@
     @include('layouts.partials.javascripts')
     
     <!-- Scripts -->
-    <script src="{{ asset('js/login.js?v=' . $asset_v) }}"></script>
+    <script src="{{ asset('js/login.js?v=' . $asset_v) }}"></>
     
     @yield('javascript')
 
