@@ -281,7 +281,7 @@ $(document).ready(function() {
 
                 string += ' (' + item.sub_sku + ')' + '<br> Price: ' + selling_price;
                 if (item.enable_stock == 1) {
-                    var qty_available = __currency_trans_from_en(item.qty_available, false, false, __currency_precision, true);
+                    var qty_available = __currency_trans_from_en(item.qty_available, false, false, __currency_precision);
                     string += ' - ' + qty_available + item.unit;
                 }
                 string += '</div>';
@@ -389,7 +389,7 @@ $(document).ready(function() {
 
         __write_number(tr.find('input.pos_unit_price'), unit_price);
         __write_number(tr.find('input.pos_line_total'), line_total, false, 2);
-        tr.find('span.pos_line_total_text').text(__currency_trans_from_en(line_total, true));
+        tr.find('span.pos_line_total_text').text(__currency_trans_from_en(line_total, true, true));
 
         pos_each_row(tr);
         pos_total_row();
@@ -479,7 +479,7 @@ $(document).ready(function() {
 
             __write_number(tr.find('input.pos_unit_price_inc_tax'), unit_price_inc_tax);
             __write_number(tr.find('input.pos_line_total'), line_total, false, 2);
-            tr.find('span.pos_line_total_text').text(__currency_trans_from_en(line_total, true));
+            tr.find('span.pos_line_total_text').text(__currency_trans_from_en(line_total, true, true));
             pos_each_row(tr);
             pos_total_row();
             round_row_to_iraqi_dinnar(tr);
@@ -735,7 +735,7 @@ $(document).ready(function() {
                     $(appended)
                         .find('input.payment-amount')
                         .last()
-                        .val(__currency_trans_from_en(b_due, false))
+                        .val(__currency_trans_from_en(b_due, false, true))
                         .change()
                         .select();
                     __select2($(appended).find('.select2'));
@@ -1191,13 +1191,17 @@ $(document).ready(function() {
     });
 
     $('#exchange_rate').change(function() {
-        var curr_exchange_rate = 1;
+       var curr_exchange_rate = $('input#exchange_rate').val();
+        if (!curr_exchange_rate) {
+            curr_exchange_rate = 1;
+        }
+        
         if ($(this).val()) {
             curr_exchange_rate = __read_number($(this));
         }
         var total_payable = __read_number($('input#final_total_input'));
         var shown_total = total_payable * curr_exchange_rate;
-        $('span#total_payable').text(__currency_trans_from_en(shown_total, false));
+        $('span#total_payable').text(__currency_trans_from_en(shown_total, false, true));
     });
 
     $('select#price_group').change(function() {
@@ -1589,6 +1593,7 @@ function pos_product_row(variation_id = null, purchase_line_id = null, weighing_
             is_draft=true;
         }
         
+        //OBTENER FILA TABLA DANTE
         $.ajax({
             method: 'GET',
             url: '/sells/pos/get_product_row/' + variation_id + '/' + location_id,
@@ -1608,17 +1613,16 @@ function pos_product_row(variation_id = null, purchase_line_id = null, weighing_
             dataType: 'json',
             success: function(result) {
                 if (result.success) {
-                    $('table#pos_table tbody')
-                        .append(result.html_content)
-                        .find('input.pos_quantity');
+                    $('table#pos_table tbody').append(result.html_content).find('input.pos_quantity');
                     //increment row count
                     $('input#product_row_count').val(parseInt(product_row) + 1);
-                    var this_row = $('table#pos_table tbody')
-                        .find('tr')
-                        .last();
+                    var this_row = $('table#pos_table tbody').find('tr').last();
+
                     pos_each_row(this_row);
 
-                    //For initial discount if present
+                    //update_row_price_for_exchange_rate(this_row); //<--- aquí actulizar tipo de cambio
+
+                    //For initial discount if present 
                     var line_total = __read_number(this_row.find('input.pos_line_total'));
                     this_row.find('span.pos_line_total_text').text(line_total);
 
@@ -1665,6 +1669,34 @@ function pos_product_row(variation_id = null, purchase_line_id = null, weighing_
     }
 }
 
+function update_row_price_for_exchange_rate(row) {
+    //var exchange_rate = $('input#exchange_rate').val();
+
+    var exchange_rate = $('input#exchange_rate').val();
+    if (!exchange_rate) {
+        exchange_rate = 1;
+    }
+
+    if (exchange_rate == 1) {
+        return true;
+    }
+
+    var pos_unit_price = __read_number(row.find('.pos_unit_price')) * exchange_rate;
+    __write_number(row.find('.pos_unit_price'), pos_unit_price);
+
+    var pos_unit_price_inc_tax =__read_number(row.find('.pos_unit_price_inc_tax')) * exchange_rate;
+    __write_number(row.find('input.pos_unit_price_inc_tax'), pos_unit_price_inc_tax);
+
+    var pos_line_total = __read_number(row.find('.pos_line_total')) * exchange_rate;
+    __write_number(row.find('input.pos_line_total'),pos_line_total);
+
+    // row.find('.row_subtotal_after_tax').text(
+    //     __currency_trans_from_en(pos_line_total_text, false, true)
+    // );
+}
+
+
+
 //Update values for each row
 function pos_each_row(row_obj) {
     var unit_price = __read_number(row_obj.find('input.pos_unit_price'));
@@ -1702,7 +1734,7 @@ function pos_total_row() {
 
     //updating shipping charges
     $('span#shipping_charges_amount').text(
-        __currency_trans_from_en(__read_number($('input#shipping_charges_modal')), false)
+        __currency_trans_from_en(__read_number($('input#shipping_charges_modal')), false, true)
     );
 
     $('span.total_quantity').each(function() {
@@ -1710,7 +1742,7 @@ function pos_total_row() {
     });
 
     //$('span.unit_price_total').html(unit_price_total);
-    $('span.price_total').html(__currency_trans_from_en(price_total, false));
+    $('span.price_total').html(__currency_trans_from_en(price_total, false, true));
     calculate_billing_details(price_total);
 }
 
@@ -1739,7 +1771,7 @@ function calculate_billing_details(price_total) {
         discount = parseFloat(discount) + parseFloat(total_customer_reward);
 
         if ($('input[name="is_direct_sale"]').length <= 0) {
-            $('span#total_discount').text(__currency_trans_from_en(discount, false));
+            $('span#total_discount').text(__currency_trans_from_en(discount, false, true));
         }
     }
 
@@ -1770,7 +1802,7 @@ function calculate_billing_details(price_total) {
         packing_charge = __calculate_amount($('#packing_charge_type').val(), 
             __read_number($('input#packing_charge')), price_total);
 
-        $('#packing_charge_text').text(__currency_trans_from_en(packing_charge, false));
+        $('#packing_charge_text').text(__currency_trans_from_en(packing_charge, false, true));
     }
 
     var total_payable = price_total + order_tax - discount + shipping_charges + packing_charge + additional_expense;
@@ -1781,21 +1813,23 @@ function calculate_billing_details(price_total) {
 
     var round_off_amount = round_off_data.diff;
     if (round_off_amount != 0) {
-        $('span#round_off_text').text(__currency_trans_from_en(round_off_amount, false));
+        $('span#round_off_text').text(__currency_trans_from_en(round_off_amount, false, true));
     } else {
         $('span#round_off_text').text(0);
     }
     $('input#round_off_amount').val(round_off_amount);
 
     __write_number($('input#final_total_input'), total_payable_rounded);
+
     var curr_exchange_rate = 1;
     if ($('#exchange_rate').length > 0 && $('#exchange_rate').val()) {
         curr_exchange_rate = __read_number($('#exchange_rate'));
     }
-    var shown_total = total_payable_rounded * curr_exchange_rate;
-    $('span#total_payable').text(__currency_trans_from_en(shown_total, false));
+   // var shown_total = total_payable_rounded * curr_exchange_rate;
+   var shown_total = total_payable_rounded;
+    $('span#total_payable').text(__currency_trans_from_en(shown_total, false, true));
 
-    $('span.total_payable_span').text(__currency_trans_from_en(total_payable_rounded, true));
+    $('span.total_payable_span').text(__currency_trans_from_en(total_payable_rounded, true, true));
 
     //Check if edit form then don't update price.
     if ($('form#edit_pos_sell_form').length == 0 && $('form#edit_sell_form').length == 0) {
@@ -1814,7 +1848,7 @@ function pos_discount(total_amount) {
 
     var discount = __calculate_amount(calculation_type, calculation_amount, total_amount);
 
-    $('span#total_discount').text(__currency_trans_from_en(discount, false));
+    $('span#total_discount').text(__currency_trans_from_en(discount, false, true));
 
     return discount;
 }
@@ -1831,7 +1865,7 @@ function pos_order_tax(price_total, discount) {
         var order_tax = 0;
     }
 
-    $('span#order_tax').text(__currency_trans_from_en(order_tax, false));
+    $('span#order_tax').text(__currency_trans_from_en(order_tax, false, true));
 
     return order_tax;
 }
@@ -1852,12 +1886,12 @@ function calculate_balance_due() {
     //change_return
     if (bal_due < 0 || Math.abs(bal_due) < 0.05) {
         __write_number($('input#change_return'), bal_due * -1);
-        $('span.change_return_span').text(__currency_trans_from_en(bal_due * -1, true));
+        $('span.change_return_span').text(__currency_trans_from_en(bal_due * -1, true, true));
         change_return = bal_due * -1;
         bal_due = 0;
     } else {
         __write_number($('input#change_return'), 0);
-        $('span.change_return_span').text(__currency_trans_from_en(0, true));
+        $('span.change_return_span').text(__currency_trans_from_en(0, true, true));
         change_return = 0;
         
     }
@@ -1869,10 +1903,10 @@ function calculate_balance_due() {
     }
 
     __write_number($('input#total_paying_input'), total_paying);
-    $('span.total_paying').text(__currency_trans_from_en(total_paying, true));
+    $('span.total_paying').text(__currency_trans_from_en(total_paying, true, true));
 
     __write_number($('input#in_balance_due'), bal_due);
-    $('span.balance_due').text(__currency_trans_from_en(bal_due, true));
+    $('span.balance_due').text(__currency_trans_from_en(bal_due, true, true));
 
     __highlight(bal_due * -1, $('span.balance_due'));
     __highlight(change_return * -1, $('span.change_return_span'));
@@ -1993,7 +2027,7 @@ function set_default_customer() {
             $('<option>', { value: default_customer_id, text: default_customer_name })
         );
     }
-    $('#advance_balance_text').text(__currency_trans_from_en(default_customer_balance), true);
+    $('#advance_balance_text').text(__currency_trans_from_en(default_customer_balance), true, true);
     $('#advance_balance').val(default_customer_balance);
     $('#shipping_address_modal').val(default_customer_address);
     if (default_customer_address) {
@@ -2180,7 +2214,7 @@ $('table#pos_table tbody').on('change', 'input.pos_line_total', function() {
     if (pos_form_validator) {
         pos_form_validator.element(quantity_element);
     }
-    tr.find('span.pos_line_total_text').text(__currency_trans_from_en(subtotal, true));
+    tr.find('span.pos_line_total_text').text(__currency_trans_from_en(subtotal, true, true));
 
     pos_total_row();
 });
@@ -2279,7 +2313,7 @@ function updateRedeemedAmount(argument) {
     points = points == '' ? 0 : parseInt(points);
     var amount_per_unit_point = parseFloat($('#rp_redeemed_modal').data('amount_per_unit_point'));
     var redeemed_amount = points * amount_per_unit_point;
-    $('#rp_redeemed_amount_text').text(__currency_trans_from_en(redeemed_amount, true));
+    $('#rp_redeemed_amount_text').text(__currency_trans_from_en(redeemed_amount, true, true));
     $('#rp_redeemed').val(points);
     $('#rp_redeemed_amount').val(redeemed_amount);
 }
@@ -2311,7 +2345,7 @@ $(document).on('change', '#rp_redeemed_modal', function(){
     points = points == '' ? 0 : parseInt(points);
     var amount_per_unit_point = parseFloat($(this).data('amount_per_unit_point'));
     var redeemed_amount = points * amount_per_unit_point;
-    $('#rp_redeemed_amount_text').text(__currency_trans_from_en(redeemed_amount, true));
+    $('#rp_redeemed_amount_text').text(__currency_trans_from_en(redeemed_amount, true, true));
     var reward_validation = isValidatRewardPoint();
     if (!reward_validation['is_valid']) {
         toastr.error(reward_validation['msg']);
@@ -2352,7 +2386,7 @@ function isValidatRewardPoint() {
 
     if (order_total < min_order_total_required) {
         is_valid = false;
-        msg = __translate('min_order_total_error', {min_order: __currency_trans_from_en(min_order_total_required, true), rp_name: rp_name});
+        msg = __translate('min_order_total_error', {min_order: __currency_trans_from_en(min_order_total_required, true, true), rp_name: rp_name});
     }
 
     var output = {

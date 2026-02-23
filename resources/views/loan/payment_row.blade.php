@@ -88,7 +88,7 @@
                       <span class="input-group-addon">
                         <i class="fas fa-money-bill-alt"></i>
                       </span>
-                       {!! Form::number("exchange_rate",  $exchange_rates, ['class' => 'form-control']); !!}
+                       {!! Form::number("exchange_rate", $exchange_rates, ['class' => 'form-control']); !!}
                   </div>
                 </div>
               </div>
@@ -133,40 +133,9 @@
               {!! Form::label('days_in_advance', 'Dias adelantados' . ':*') !!} 
               <div class="input-group">
                 <span class="input-group-addon">
-                  <i class="fas fa-money-bill-alt"></i>
+                  <i class="fas fa-calendar-check"></i>
                 </span>
-                <select class="form-control" name="days_in_advance" >
-                    <option value="1">1 dia</option>
-                    <option value="2">2 dia</option>
-                    <option value="3">3 dia</option>
-                    <option value="4">4 dia</option>
-                    <option value="5">5 dia</option>
-                    <option value="6">6 dia</option>
-                    <option value="7">7 dia</option>
-                    <option value="8">8 dia</option>
-                    <option value="9">9 dia</option>
-                    <option value="10">10 dias</option>
-                    <option value="11">11 dias</option>
-                    <option value="12">12 dias</option>
-                    <option value="13">13 dias</option>
-                    <option value="14">14 dias</option>
-                    <option value="15">15 dias</option>
-                    <option value="16">16 dias</option>
-                    <option value="17">17 dias</option>
-                    <option value="18">18 dias</option>
-                    <option value="19">19 dias</option>
-                    <option value="20">20 dias</option>
-                    <option value="21">21 dias</option>
-                    <option value="22">22 dias</option>
-                    <option value="23">23 dias</option>
-                    <option value="24">24 dias</option>
-                    <option value="25">25 dias</option>
-                    <option value="26">26 dias</option>
-                    <option value="27">27 dias</option>
-                    <option value="28">28 dias</option>
-                    <option value="29">29 dias</option>
-                    <option value="30">30 dias</option>
-                </select> 
+                 {!! Form::text("days_in_advance",  1, ['class' => 'form-control']); !!}
               </div>
             </div>
           </div>

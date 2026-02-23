@@ -75,6 +75,7 @@ function __currency_trans_from_en(
     precision = __currency_precision,
     is_quantity = false
 ) {
+
     if (use_page_currency && __p_currency_symbol) {
         var s = __p_currency_symbol;
         var thousand = __p_currency_thousand_separator;
@@ -130,7 +131,7 @@ function __currency_convert_recursively(element, use_page_currency = false) {
             show_symbol = false;
         }
 
-        $(this).text(__currency_trans_from_en(value, show_symbol, use_page_currency, __currency_precision, is_quantity));
+        //$(this).text(__currency_trans_from_en(value, show_symbol, use_page_currency, __currency_precision, is_quantity));
     });
 }
 

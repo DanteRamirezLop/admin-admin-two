@@ -90,6 +90,9 @@
         </td>
         <td>
             @php
+                
+
+
                 $pp_without_discount = !empty($purchase_order_line) ? $purchase_order_line->pp_without_discount/$purchase_order->exchange_rate : $variation->default_purchase_price;
 
                 $discount_percent = !empty($purchase_order_line) ? $purchase_order_line->discount_percent : 0;
@@ -104,6 +107,8 @@
 
                 $discount_percent = !empty($imported_data['discount_percent']) ? $imported_data['discount_percent'] : $discount_percent;
             @endphp
+
+   
             {!! Form::text('purchases[' . $row_count . '][pp_without_discount]',
             number_format($pp_without_discount, $currency_precision, $currency_details->decimal_separator, $currency_details->thousand_separator), ['class' => 'form-control input-sm purchase_unit_cost_without_discount input_number', 'required']); !!}
 
@@ -228,7 +233,8 @@
             </td>
         @endif
         @endif
-        <td>
+        <td> 
+   
            {!! Form::textarea('purchases[' . $row_count . '][note]', null, ['class' => 'form-control', 'rows' => 2]); !!}
         </td> 
         <?php $row_count++ ;?>

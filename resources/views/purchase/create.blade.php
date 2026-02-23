@@ -15,10 +15,6 @@
 <section class="content">
 
 	<!-- Page level currency setting -->
-	<input type="hidden" id="p_code" value="{{$currency_details->code}}">
-	<input type="hidden" id="p_symbol" value="{{$currency_details->symbol}}">
-	<input type="hidden" id="p_thousand" value="{{$currency_details->thousand_separator}}">
-	<input type="hidden" id="p_decimal" value="{{$currency_details->decimal_separator}}">
 
 	@include('layouts.partials.error')
 

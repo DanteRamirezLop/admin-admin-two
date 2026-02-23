@@ -726,6 +726,7 @@ $(document).ready(function() {
     toggle_search();
 });
 
+//OBTENER LA FILA DANTE
 function get_purchase_entry_row(product_id, variation_id) {
     if (product_id) {
         var row_count = $('#row_count').val();
@@ -753,7 +754,7 @@ function get_purchase_entry_row(product_id, variation_id) {
         });
     }
 }
-
+//dante
 function append_purchase_lines(data, row_count, trigger_change = false) {
     $(data)
         .find('.purchase_quantity')
@@ -763,8 +764,9 @@ function append_purchase_lines(data, row_count, trigger_change = false) {
             $('#purchase_entry_table tbody').append(
                 update_purchase_entry_row_values(row)
             );
-            update_row_price_for_exchange_rate(row);
 
+
+            update_row_price_for_exchange_rate(row); //<- FUNCION TIPO DE CAMBIO
             update_inline_profit_percentage(row);
 
             update_table_total();
@@ -835,6 +837,7 @@ function update_row_price_for_exchange_rate(row) {
         return true;
     }
 
+    //purchase_unit_cost_without_discount
     var purchase_unit_cost_without_discount =
         __read_number(row.find('.purchase_unit_cost_without_discount'), true) / exchange_rate;
     __write_number(
@@ -857,9 +860,11 @@ function update_row_price_for_exchange_rate(row) {
         true
     );
 
+    //pos_line_total_text
     var purchase_product_unit_tax =
         __read_number(row.find('.purchase_product_unit_tax'), true) / exchange_rate;
     __write_number(row.find('input.purchase_product_unit_tax'), purchase_product_unit_tax, true);
+    
     row.find('.purchase_product_unit_tax_text').text(
         __currency_trans_from_en(purchase_product_unit_tax, false, true)
     );

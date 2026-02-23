@@ -13,7 +13,7 @@
 	@endif
 @endforeach
 
-<tr class="product_row" data-row_index="{{$row_count}}" @if(!empty($so_line)) data-so_id="{{$so_line->transaction_id}}" @endif>
+<tr class="product_row " data-row_index="{{$row_count}}" @if(!empty($so_line)) data-so_id="{{$so_line->transaction_id}}" @endif>
 	<td>
 		@if(!empty($so_line))
 			<input type="hidden" 
@@ -29,7 +29,7 @@
 		@if( ($edit_price || $edit_discount) && empty($is_direct_sell) )
 		<div title="@lang('lang_v1.pos_edit_product_price_help')">
 		<span class="text-link text-info cursor-pointer" data-toggle="modal" data-target="#row_edit_product_price_modal_{{$row_count}}">
-			{!! $product_name !!}
+			{!! $product_name !!} 
 			&nbsp;<i class="fa fa-info-circle"></i>
 		</span>
 		</div>

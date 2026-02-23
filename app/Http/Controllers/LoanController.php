@@ -794,7 +794,9 @@ class LoanController extends Controller
             //busco el tipo de cambio del dia
             $search_date = Carbon::now()->format('Y-m-d');
             $exchange_rates = ExchangeRates::where('search_date',$search_date)->first();
-            $exchange_rates = $exchange_rates ? $exchange_rates : 1;
+            $exchange_rates = $exchange_rates ? $exchange_rates->sale : 1;
+
+            $exchange_rates = number_format($exchange_rates,3);
             
             $payment_schedule = PaymentSchedule::findOrFail($payment_schedules_id);
             if ($payment_schedule->payment_status != 'paid') {

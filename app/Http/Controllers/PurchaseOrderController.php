@@ -269,6 +269,7 @@ class PurchaseOrderController extends Controller
         $business_locations = $business_locations['locations'];
         $currency_details = $this->transactionUtil->purchaseCurrencyDetails($business_id);
 
+
         $types = [];
         if (auth()->user()->can('supplier.create')) {
             $types['supplier'] = __('report.supplier');
@@ -878,7 +879,7 @@ class PurchaseOrderController extends Controller
         $date_print = Carbon::now()->format('d/m/Y');
         $date_release = $purchase->transaction_date ? Carbon::parse($purchase->transaction_date)->format('d/m/Y') : null; 
         $date_delivery = $purchase->delivery_date ? Carbon::parse($purchase->delivery_date)->format('d/m/Y') : null;
-        //Texto de Dolares
+        //Texto de Dolares -tax
         $amount = $purchase->final_total;
         $text_amount = $this->montoATexto($amount, 'USD');
 
@@ -886,7 +887,7 @@ class PurchaseOrderController extends Controller
         $search_date = Carbon::parse($purchase->transaction_date)->format('y-m-d');
         $exchange_rate = ExchangeRates::where('search_date',$search_date)->first();
          if($exchange_rate){
-            $exchange_rate_purchase = $exchange_rate->purchase;
+            $exchange_rate_purchase = $exchange_rate->sale;
             $seven_hundred_usa =  700 / $exchange_rate_purchase; // Seteciento soles convertidos a dolares
             $three_percente = $purchase->final_total * 0.03;
             $three_percent_withholding =  ($purchase->final_total >= $seven_hundred_usa) ? $three_percente : 0;

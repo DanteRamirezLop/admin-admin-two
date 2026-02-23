@@ -79,11 +79,11 @@ class LoanPaymentController extends Controller
             $amount = $this->transactionUtil->num_uf($request->amount); //cantidad que se está pagando
             //nota
             $note = "";
-            $note .= $request->input('note');
+            $note .= $request->input('note').'. ';
             if($type_pay == 2){
                 $days_in_advance = $request->input('days_in_advance');
                 $interestSaved =   ($amount * 0.00111) * $days_in_advance;
-                $note .= 'Por pago adelantado de se '.$days_in_advance.' días está ahorrando '. number_format($interestSaved,2) .'. ';
+                $note .= 'Por pago adelantado de '.$days_in_advance.' días está ahorrando '. number_format($interestSaved,2) .'Dolares. ';
             }
 
             //El monto a pagar no puede ser superior a la cuota 
@@ -136,8 +136,6 @@ class LoanPaymentController extends Controller
 
                 //REGISTRAR SI ES UN PAGO ADELANTADO
                 if($type_pay == 2){
-
-
                     //$days_period = $this->daysInPeriod($payment_shedule, $loan->date);
                     //$interestSaved =  $this->transactionUtil->getDiscountPayAvance($days_period, $days_in_advance,$payment_shedule->interests);
                     //REGISTRAR EL DESCUENTO EN LA TRANSACCION
@@ -457,122 +455,7 @@ class LoanPaymentController extends Controller
     }
 
 
-    public function pruebaJob(){
-        
-       try {
-            $customers = [];
-            $count = 0;
-            $phones = '';
-            $numeros = [];
-            $dayRightNow = Carbon::now(); //Dia actual
-            $inicioMes = Carbon::now()->startOfMonth()->startOfDay();; // Primer día del mes
-            //buscar el estado del mes pasado
-            $primerDiaMesPasado = Carbon::now()->subMonthNoOverflow()->startOfMonth()->toDateString();
-            $ultimoDiaMesPasado = Carbon::now()->subMonthNoOverflow()->endOfMonth()->toDateString();
-            
-            DB::beginTransaction();
-            
-            
-            $loans = Loan::whereIn('status', ['approved', 'in arrears', 'partial'])->get();
-            foreach ($loans as $loan) {
-                //Cambiar de estato en el prestamo y calendario
-                $days_late = 0;
-                $payment_schedules = PaymentSchedule::where('loan_id',$loan->id)->where('status','!=','paid')->whereBetween('sheduled_date', [$inicioMes, $dayRightNow])->first();
-                if($payment_schedules){
-                    $payday =  Carbon::parse($payment_schedules->sheduled_date);//Fecha de pago
-                    $days_late = $payday->diffInDays($dayRightNow, false); //Dias atrasado
-            
-                    if($days_late > 0){
-                        if($payment_schedules->status != 'paid'){
-                            $late_amount_late = $payment_schedules->mount_quota * 0.00111;
-                            $late_amount = $late_amount_late * $days_late; //Calcular la cantidad de morosidad
-                            #-------CAMBIOS HOY MARTES AQUI----------
-                            $delay =  Delay::where('loan_id',$loan->id)->where('payment_schedule_id',$payment_schedules->id)->first();
-                            if($delay){  
-                                if($delay->status == 'late'){  
-                                    $delay->days_late = $days_late;
-                                    $delay->late_amount = $late_amount;
-                                    $delay->save();
-                                    //Aumento la cantidad de morosidad en el la registro total
-                                    $transaction = Transaction::find($loan->transaction_id);
-                                    $transaction->final_total +=  $late_amount_late;
-                                    $transaction->additional_expense_value_2 +=  $late_amount_late;
-                                    $transaction->save();
-                                }
-                            }else{
-                                //registro de la mora en el primer día
-                                Delay::create(['late_date'=> $dayRightNow,'days_late'=> $days_late,'late_amount'=> $late_amount,'status'=> 'late','regularization_date'=> null,'loan_id'=> $loan->id,'payment_schedule_id'=>$payment_schedules->id]);
-                                //Aumento la cantidad de morosidad en el la registro total
-                                $transaction = Transaction::find($loan->transaction_id);
-                                $transaction->final_total +=  $late_amount;
-                                $transaction->additional_expense_value_2 += $late_amount;
-                                $transaction->save();
-
-                                #------CAMBIO DE ESTADO A LA LETRA EN MORA-------------
-                                $payment_schedules->status = 'overdue';
-                                $payment_schedules->save();
-                                #-----CAMBIO EL ESTADO DEL PRESTAMO EN MORA------------
-                                $loan->status = 'in arrears';
-                                $loan->save(); 
-                            }
-
-                            #Guardar todos los clientes morosos para Mail
-                            $customers[$count]['customer'] = $loan->type_product;
-                            $customers[$count]['lost_days'] = $days_late;
-                            //$customers[$count]['amount'] =  $late_amount;
-                            $count = $count + 1;
-                            #Datos de los clientes para mensaje para SMS
-                            if (!empty($loan->contact->mobile)) {
-                                $numeros[] = $loan->contact->mobile;
-                            }
-                        }
-                    }
-                }else{
-                    $schedules_last_month = PaymentSchedule::where('loan_id',$loan->id)->where('status','overdue')->whereBetween('sheduled_date', [$primerDiaMesPasado, $ultimoDiaMesPasado])->first();
-                    if($schedules_last_month){
-                        //registrar la mora que tiene cola de la mora del mes anterior, Esto se registra en su propia tabla Delay del mes anterior
-                        $late_amount_late = $schedules_last_month->mount_quota * 0.00111;
-                        $delay =  Delay::where('status','late')->where('loan_id',$loan->id)->where('payment_schedule_id',$schedules_last_month->id)->first();
-                        
-                        if($delay){
-
-                            $delay->days_late = $delay->days_late + 1;
-                            $delay->late_amount =  $delay->late_amount + $late_amount_late;
-                            $delay->save();
-                            //-----------
-                            //Aumento la cantidad de morosidad en el la registro total
-                            $transaction = Transaction::find($loan->transaction_id);
-                            $transaction->final_total +=   $late_amount_late;
-                            $transaction->additional_expense_value_2 +=  $late_amount_late;
-                            $transaction->save();
-
-                            #Guardar todos los clientes morosos para Mail
-                            $customers[$count]['customer'] = $loan->type_product;
-                            $customers[$count]['lost_days'] = $days_late;
-                            //$customers[$count]['amount'] =  $late_amount;
-                            $count = $count + 1;
-                            #Datos de los clientes para mensaje para SMS
-                            if (!empty($loan->contact->mobile)) {
-                                $numeros[] = $loan->contact->mobile;
-                            
-                            }
-                        }
-                        
-                    }
-                }
-            }
-
-
-            DB::commit();
-            Log::info('MiJob se ejecutó correctamente a las ' . now());
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            \Log::emergency('File:'.$e->getFile().'Line:'.$e->getLine().'Message:'.$e->getMessage());
-            exit('File:'.$e->getFile().'Line:'.$e->getLine().'Message:'.$e->getMessage());
-        }
-
-    }
+    
 
     //  private function daysInPeriod(PaymentSchedule $current, string $loanStartDate){
 

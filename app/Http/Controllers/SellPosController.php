@@ -303,6 +303,8 @@ class SellPosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    //  $transaction_data = $request->only
     public function store(Request $request)
     {
         if (! auth()->user()->can('sell.create') && ! auth()->user()->can('direct_sell.access') && ! auth()->user()->can('so.create')) {
@@ -392,9 +394,13 @@ class SellPosController extends Controller
                     $input['commission_agent'] = $user_id;
                 }
 
+                //exchange_rate
                 if (isset($input['exchange_rate']) && $this->transactionUtil->num_uf($input['exchange_rate']) == 0) {
                     $input['exchange_rate'] = 1;
+                }else{
+                    $input['exchange_rate'] = $input['exchange_rate'] / 10;
                 }
+
 
                 //Customer group details
                 $contact_id = $request->get('contact_id', null);
@@ -1689,9 +1695,29 @@ class SellPosController extends Controller
                 $edit_discount = auth()->user()->can('edit_product_discount_from_pos_screen');
                 $edit_price = auth()->user()->can('edit_product_price_from_pos_screen');
             }
-
+            //currency_details
+            //exchange_rate
+            $currency_details = $this->transactionUtil->purchaseCurrencyDetails($business_id);
             $output['html_content'] = view('sale_pos.product_row')
-                        ->with(compact('product', 'row_count', 'tax_dropdown', 'enabled_modules', 'pos_settings', 'sub_units', 'discount', 'waiters', 'edit_discount', 'edit_price', 'purchase_line_id', 'warranties', 'quantity', 'is_direct_sell', 'so_line', 'is_sales_order', 'last_sell_line'))
+                        ->with(compact(
+                            'currency_details',
+                            'product', 
+                            'row_count', 
+                            'tax_dropdown', 
+                            'enabled_modules', 
+                            'pos_settings', 
+                            'sub_units', 
+                            'discount', 
+                            'waiters', 
+                            'edit_discount', 
+                            'edit_price', 
+                            'purchase_line_id',
+                             'warranties', 
+                             'quantity', 
+                             'is_direct_sell', 
+                             'so_line', 
+                             'is_sales_order', 
+                             'last_sell_line'))
                         ->render();
         }
 

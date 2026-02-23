@@ -274,7 +274,7 @@
                 @if($three_percent_withholding)
                 <tr>
                     <td style="text-align: center; font-size: 12px;" colspan="2">
-                        retencióm minima de  S/.700 con tipo de cambio SUNAT.  <b>Compra: {{number_format($exchange_rate_purchase,3)}}</b> 
+                        retencióm minima de  S/.700 con tipo de cambio SUNAT.  <b>Venta: {{number_format($exchange_rate_purchase,3)}}</b> 
                     </td>
                     <td style="text-align: center; font-size: 13px;"colspan="2">
                         <b>Retención 3%</b> 
