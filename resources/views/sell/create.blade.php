@@ -321,6 +321,7 @@
 				        </div>
 				    </div>
 		        @endif
+
 		        <div class="col-sm-3">
 	                <div class="form-group">
 	                    {!! Form::label('upload_document', __('purchase.attach_document') . ':') !!}
@@ -596,13 +597,12 @@
 	        		}
 	        	@endphp
 
-	        	<div class="col-md-4">
+				<div class="col-md-4">
 			        <div class="form-group">
 			            {!! Form::label('shipping_custom_field_1', $label_1 ) !!} 
 			            <!-- {!! Form::text('shipping_custom_field_1', !empty($walk_in_customer['shipping_custom_field_details']['shipping_custom_field_1']) ? $walk_in_customer['shipping_custom_field_details']['shipping_custom_field_1'] : null, ['class' => 'form-control','placeholder' => $shipping_custom_label_1, 'required' => $is_shipping_custom_field_1_required]); !!}
 			        -->
 						 {!! Form::select('shipping_custom_field_1',['No','Si'], null, ['class' => 'form-control','placeholder' => __('messages.please_select')]); !!}
-		       
 					</div>
 			    </div>
 	        @endif
@@ -997,7 +997,7 @@
 	        });
     	});
 
-		//cambios de Soles a dolares
+		//Cambios de Soles a dolares
 		$(document).on('change', '.currency_types_dropdown', function(e) {
 			var payment_type = $('.currency_types_dropdown').val();
 			calculate_dollars = $('#calculate_dollars');

@@ -58,12 +58,13 @@ $(document).ready(function() {
             url: $(this).attr('href'),
             dataType: 'html',
             success: function(result) {
-                $(container).html(result).modal('show');
+                $(container)
+                    .html(result)
+                    .modal('show');
                 __currency_convert_recursively(container);
             },
         });
     });
-
     $(document).on('click', '.delete_payment', function(e) {
         swal({
             title: LANG.sure,

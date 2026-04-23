@@ -123,6 +123,8 @@ class LoanController extends Controller
             })
             ->where('loans.business_id', $business_id)
             ->where('loans.status', '!=', 'quotation')
+            ->where('loans.type', '!=', 'rent-sale')
+             ->where('loans.status', '!=', 'paid')
             ->select(
                 'loans.id',
                 'loans.loan_amount',
@@ -184,6 +186,9 @@ class LoanController extends Controller
                                     </button>
                                      <ul class="dropdown-menu dropdown-menu-left" role="menu">
                                      <li><a href="'.action([\App\Http\Controllers\LoanPaymentController::class, 'statemenPDF'], [$row->id]).'"  ><i class="fas fa fa-download" aria-hidden="true"></i> Descargar estado de cuenta</a></li>';
+
+                            $html .= '<li class="divider"></li>';
+                            $html .= '<li><a href="'.action([\App\Http\Controllers\LoanController::class, 'show'], [$row->id]).'" "><i class="fas fa fa-calendar" aria-hidden="true"></i> Calendario de pagos</a></li>';
                         } 
                         
                             $html .= '</ul></div>';
@@ -242,8 +247,13 @@ class LoanController extends Controller
                         $paid_partial = bcsub($row->delay, $row->total_only_payments, 4);
                     }
 
+
                     $total_to_delay =  $row->for_due + $paid_partial;
+
                     
+                    if($total_to_delay < 0 && $total_to_delay > -0.25) {
+                        $total_to_delay = 0;
+                    }
                     
                     
                     $total_to_delay_html = '<span class="payment_due" data-orig-value="'.$total_to_delay.'">'.$this->transactionUtil->num_f($total_to_delay, true).'</span>';
@@ -251,10 +261,7 @@ class LoanController extends Controller
                 })
                 ->addColumn('total_remaining', function ($row) {
                     
-                    
-          
-                    
-                    
+                
                      $mora = round($row->mora);
                     if($mora){
                          $total_remaining = bcsub($row->delay, $row->total_only_payments, 4) + $row->mora;
@@ -297,8 +304,8 @@ class LoanController extends Controller
                 ->rawColumns(['action','label','seller','total','final_total','total_paid','total_remaining','total_delay','total_to_delay','total_mora','total_remaining_mora'])
                 ->make(true);
         }
-        $type = request()->get('id');
-        return view('loan.index',compact('type'));
+        $loan_type = request()->get('id');
+        return view('loan.index',compact('loan_type'));
     }
 
     public function create()
@@ -314,14 +321,18 @@ class LoanController extends Controller
         $insurance = Goal::where('name','seguro')->first();
         $waiters = $this->transactionUtil->getModuleStaff($business_id,'customer.view_own',true);
         $rightNow = Carbon::now();
-        return view('loan.create',compact('customer','products','walk_in_customer','filing_fee','gps','insurance','waiters','rightNow'));
+
+        $type = request()->get('type','');                  
+
+        return view('loan.create',compact('type','customer','products','walk_in_customer','filing_fee','gps','insurance','waiters','rightNow'));
     }
 
- public function store(Request $request)
+    public function store(Request $request)
     {
         try {
                 DB::beginTransaction();
                 //------------CAPTURA DE DATOS DEL FORMULARIO---------------
+                $type = $request->input('type') ? $request->input('type') : 'sale';
                 $initial_amount = $request->input('pay_initial'); //Cantidad a pagar de la inicial
                 $multiplayer = $request->input('multiplayer'); //Tasa anual 
                 $number_month = $request->input('number_month'); //Número de meses del prestamo
@@ -526,6 +537,7 @@ class LoanController extends Controller
                     'initial_fraction'=> $amount_fracction,
                     'mounth_initial'=> $mounth_fracction,
                     'start_rate'=>$taxes_fraccion,
+                    'type' =>$type,
                 ]);
                 $this->generateQuota($loan);
                 //Crear la ventas predeterminadas en el ERP
@@ -570,7 +582,12 @@ class LoanController extends Controller
             \Log::emergency('File:'.$e->getFile().'Line:'.$e->getLine().'Message:'.$e->getMessage());
             $output = ['success' => false,'msg' => 'Error: '.$e->getLine().'Message:'.$e->getMessage()];
         }
-        return redirect('loans')->with('status', $output);
+        if($type == 'sale'){
+            return redirect('loans')->with('status', $output);
+        }else{
+            return redirect('/loan/list-rent-sale')->with('status', $output);
+        }
+        
     }
 
     private function calculateQuote($multiplayer, $number_month, $loan_amount){
@@ -788,8 +805,8 @@ class LoanController extends Controller
         return view('loan.show')->with(compact('countVersion','annexes','canPayCapital','there_is_mora','paymentSchedules','type','customer','loan','user','total'));
     }
 
-
-  public function addPayment($payment_schedules_id){
+    public function addPayment($payment_schedules_id)
+    {
         if (request()->ajax()) {
             //busco el tipo de cambio del dia
             $search_date = Carbon::now()->format('Y-m-d');
@@ -991,5 +1008,241 @@ class LoanController extends Controller
     }
 
 
+    public function listRentSale(){
+
+      if (request()->ajax()) {
+           $business_id = request()->session()->get('user.business_id');
+           $psAgg = DB::table('payment_schedules as ps')
+            ->leftJoin('schedule_versions as sv', 'sv.id', '=', 'ps.schedule_version_id')
+            ->selectRaw("
+                ps.loan_id,
+                COALESCE(SUM(
+                    CASE WHEN ps.status <> 'pending'
+                    THEN ps.mount_quota + ps.gps_quota + ps.sure_quota + ps.admin_fee_quota + ps.initial
+                    ELSE 0 END
+                ),0) as delay,
+
+                COALESCE(SUM(
+                    CASE WHEN ps.status = 'pending'
+                    THEN ps.mount_quota + ps.gps_quota + ps.sure_quota + ps.admin_fee_quota + ps.initial
+                    ELSE 0 END
+                ),0) as for_due
+            ")
+            ->where(function ($q) {
+                // Subquery correlacionado: ¿este loan_id tiene alguna versión activa?
+                $activeVersionExists = function ($sq) {
+                    $sq->selectRaw('1')
+                    ->from('payment_schedules as psx')
+                    ->join('schedule_versions as svx', 'svx.id', '=', 'psx.schedule_version_id')
+                    ->whereColumn('psx.loan_id', 'ps.loan_id')
+                    ->where('svx.status', 'active')
+                    ->limit(1);
+                };
+                $q
+                // CASO A: Si NO existe versión activa => usa SOLO originales (NULL)
+                ->where(function ($q1) use ($activeVersionExists) {
+                    $q1->whereNotExists($activeVersionExists)
+                    ->whereNull('ps.schedule_version_id');
+                })
+                // CASO B: Si SÍ existe versión activa => usa SOLO filas de esa(s) versión(es) activa(s)
+                ->orWhere(function ($q2) use ($activeVersionExists) {
+                    $q2->whereExists($activeVersionExists)
+                    ->where('sv.status', 'active');
+                });
+            })
+            ->groupBy('ps.loan_id');
+
+            $dAgg = DB::table('delays as d')
+            ->selectRaw("
+                d.loan_id,
+                COALESCE(SUM(
+                    CASE WHEN d.status = 'late'
+                    THEN d.late_amount
+                    ELSE 0 END
+                ),0) as mora
+            ")
+            ->whereNull('d.deleted_at')
+            ->groupBy('d.loan_id');
+
+            $loans = Loan::query()
+            ->leftJoin('transactions', 'loans.transaction_id', '=', 'transactions.id')
+            ->leftJoinSub($psAgg, 'psa', function ($join) {
+                $join->on('psa.loan_id', '=', 'loans.id');
+            })
+            ->leftJoinSub($dAgg, 'da', function ($join) {
+                $join->on('da.loan_id', '=', 'loans.id');
+            })
+            ->where('loans.business_id', $business_id)
+            ->where('loans.status', '!=', 'quotation')
+            ->where('loans.type', '!=', 'sale')
+            ->select(
+                'loans.id',
+                'loans.loan_amount',
+                'loans.amount',
+                'loans.created_at',
+                'loans.transaction_id',
+                'loans.status',
+                'loans.vin',
+                'loans.type_product',
+                'loans.product_name',
+                'loans.number_month',
+                'loans.waiter',
+                'transactions.final_total as final_total',
+                DB::raw('(SELECT SUM(IF(TP.is_return = 1,-1*TP.amount,TP.amount))
+                        FROM transaction_payments AS TP
+                        WHERE TP.transaction_id = transactions.id) as total_paid'),
+       
+                DB::raw('(SELECT 
+                            SUM(IF(TP.is_return = 1,-1*TP.amount,TP.amount))
+                            FROM transaction_payments AS TP
+                            WHERE TP.transaction_id = transactions.id AND TP.payment_schedule_id IS NOT NULL
+                        ) as total_only_payments'),
+
+                DB::raw('COALESCE(psa.delay,0) as delay'),
+                DB::raw('COALESCE(da.mora,0) as mora'),
+                DB::raw('COALESCE(psa.for_due,0) as for_due'),
+            )
+            ->get();
+
+            return Datatables::of($loans)->addColumn(
+                    'action',
+                     function ($row){
+                             if (auth()->user()->can('user.view') || auth()->user()->can('user.create') || auth()->user()->can('roles.view')){                
+                            $html = '<div class="btn-group">
+                                    <button type="button" class="btn btn-info dropdown-toggle btn-xs" 
+                                        data-toggle="dropdown" aria-expanded="false">'.
+                                        __('messages.actions').
+                                        '<span class="caret"></span><span class="sr-only">Toggle Dropdown
+                                        </span>
+                                    </button>
+                                        <ul class="dropdown-menu dropdown-menu-left" role="menu">.   
+                                            <li><a href="'.route('addNumberLetter',[$row->id]).'"><i class="fa fa-list" aria-hidden="true"></i> Asignar número de letra</a></li>';
+
+                                $html .= '<li class="divider"></li>';
+                                $html .= '<li><a href="'.action([\App\Http\Controllers\LoanController::class, 'show'], [$row->id]).'" "><i class="fas fa fa-calendar" aria-hidden="true"></i> Calendario de pagos</a></li>';
+                                $html .= '<li class="divider"></li>';
+                                $html .= '<li><a href="'.action([\App\Http\Controllers\LoanPaymentController::class, 'statemenPDF'], [$row->id]).'"  ><i class="fas fa fa-download" aria-hidden="true"></i> Descargar estado de cuenta</a></li>';
+                                $html .= '<li><a href="#" class="print-invoice" data-href="'.route('sell.printInvoice', [$row->transaction_id]).'"><i class="fas fa-print" aria-hidden="true"></i> '.__('lang_v1.print_invoice').'</a></li>';
+                                $html .= '<li><a href="'.action([\App\Http\Controllers\TransactionPaymentController::class, 'show'], [$row->transaction_id]).'" class="view_payment_modal"><i class="fas fa-money-bill-alt"></i> '.__('purchase.view_payments').'</a></li>';
+                                $html .= '<li><a href="#" data-href="'.action([\App\Http\Controllers\SellController::class, 'show'], [$row->transaction_id]).'" class="btn-modal" data-container=".view_modal"><i class="fas fa-eye" aria-hidden="true"></i> '.__('messages.view').'</a></li>';
+                                $html .= '<li><a href="'.action([\App\Http\Controllers\LoanController::class, 'destroy'], [$row->id]).'" class="delete-sale"> <i class="fas fa-trash"></i> '.__('messages.delete').'</a></li>';
+                        }else{
+                          $html = '<div class="btn-group">
+                                    <button type="button" class="btn btn-info dropdown-toggle btn-xs" 
+                                        data-toggle="dropdown" aria-expanded="false">'.
+                                        __('messages.actions').
+                                        '<span class="caret"></span><span class="sr-only">Toggle Dropdown
+                                        </span>
+                                    </button>
+                                     <ul class="dropdown-menu dropdown-menu-left" role="menu">
+                                     <li><a href="'.action([\App\Http\Controllers\LoanPaymentController::class, 'statemenPDF'], [$row->id]).'"  ><i class="fas fa fa-download" aria-hidden="true"></i> Descargar estado de cuenta</a></li>';
+
+                            $html .= '<li class="divider"></li>';
+                            $html .= '<li><a href="'.action([\App\Http\Controllers\LoanController::class, 'show'], [$row->id]).'" "><i class="fas fa fa-calendar" aria-hidden="true"></i> Calendario de pagos</a></li>';
+                        } 
+                        
+                            $html .= '</ul></div>';
+                            return $html;
+                     }
+                )->addColumn(
+                    'label',
+                    function ($row){
+                        switch ($row->status) {
+                            case "approved":
+                                $label = '<span class="label label-info">Aprobado</span>';
+                                break;
+                            case"partial":
+                                $label = '<span class="label label-info">Parcial</span>';
+                                break;
+                            case"in arrears":
+                                $label = '<span class="label label-danger">Atrasado</span>';
+                                break;
+                            case"cancelled":
+                                $label = '<span class="label label-default">Cancelado</span>';
+                                break;
+                            case"paid":
+                                $label = '<span class="label label-success">pagado</span>';
+                                break;
+                        }
+                        return $label;
+                     }
+                )
+                 ->addColumn('total_delay', function ($row) {
+                     
+                   $mora = round($row->mora);
+                    if($mora){
+                        $total_delay = bcsub($row->delay, $row->total_only_payments, 4);
+                    }else{
+                        $total_delay = 0;
+                    }
+
+
+                     if($total_delay < 0 && $total_delay > -0.25) {
+                        $total_delay = 0;
+                    }
+                    $total_delay_html = '<span class="payment_due" data-orig-value="'.$total_delay.'">'.$this->transactionUtil->num_f($total_delay, true).'</span>';
+                    return $total_delay_html;
+                })
+
+                ->addColumn('total_to_delay', function ($row) {
+              
+                    $mora = round($row->mora);
+                    if($mora){
+                        $paid_partial = 0;
+                    }else{
+                        $paid_partial = bcsub($row->delay, $row->total_only_payments, 4);
+                    }
+
+                    $total_to_delay =  $row->for_due + $paid_partial;
+                    $total_to_delay_html = '<span class="payment_due" data-orig-value="'.$total_to_delay.'">'.$this->transactionUtil->num_f($total_to_delay, true).'</span>';
+                    return $total_to_delay_html;
+                })
+                ->addColumn('total_remaining', function ($row) {
+                    
+                    $mora = round($row->mora);
+                    if($mora){
+                         $total_remaining = bcsub($row->delay, $row->total_only_payments, 4) + $row->mora;
+                    }else{
+                        $total_remaining = 0;
+                    }
+                    
+                    if($total_remaining < 0 && $total_remaining > -0.25) {
+                        $total_remaining = 0;
+                    }
+                    
+                    $total_remaining_html = '<span class="payment_due" data-orig-value="'.$total_remaining.'">'.$this->transactionUtil->num_f($total_remaining, true).'</span>';
+                    return $total_remaining_html;
+                })
+
+                 ->addColumn('total_mora', function ($row) {
+                    $total_mora = $row->mora;
+                    $total_mora_html = '<span class="payment_due" data-orig-value="'.$total_mora.'">'.$this->transactionUtil->num_f($total_mora, true).'</span>';
+                    return $total_mora_html;
+                })
+
+                 ->addColumn('total_remaining_mora', function ($row) {
+                    $total_remaining = $row->final_total - $row->total_paid;
+                    $total_remaining_html = '<span class="payment_due" data-orig-value="'.$total_remaining.'">'.$this->transactionUtil->num_f($total_remaining, true).'</span>';
+                    return $total_remaining_html;
+                })
+
+                ->editColumn(
+                    'final_total',
+                    '<span class="final-total" data-orig-value="{{$final_total}}"> @format_currency($final_total)  </span>'
+                )
+                ->editColumn(
+                    'total_paid',
+                    '<span class="total-paid" data-orig-value="{{$total_paid}}">@format_currency($total_paid)</span>'
+                )
+
+                ->editColumn('loan_amount','$ {{number_format($loan_amount,2)}}')
+                ->editColumn('amount','$ {{number_format($amount,2)}}')
+                ->editColumn('created_at','{{date("Y/m/d",strtotime($created_at))}}')
+                ->rawColumns(['action','label','seller','total','final_total','total_paid','total_remaining','total_delay','total_to_delay','total_mora','total_remaining_mora'])
+                ->make(true);
+        }
+        $loan_type = request()->get('id');
+        return view('loan.index',compact('loan_type'));
+    }
 
 }

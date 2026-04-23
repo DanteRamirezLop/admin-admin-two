@@ -164,6 +164,7 @@ $(document).ready( function(){
             { data: 'created_at', name: 'created_at'},
             { data: 'invoice_no', name: 'invoice_no'},
             { data: 'custom_field_1', name: 'transactions.custom_field_1', @if(empty($custom_labels['sell']['custom_field_1'])) visible: false @endif},
+           
             { data: 'conatct_name', name: 'conatct_name'},
             { data: 'mobile', name: 'contacts.mobile'},
             { data: 'payment_status', name: 'payment_status'},

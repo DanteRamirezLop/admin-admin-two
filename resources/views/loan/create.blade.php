@@ -10,6 +10,7 @@
     <!-- Main content -->
     <div class="box box-primary">
         <div class="box-body mt-5 mb-5">
+
             <div class="row">
                     <div class="col-md-4" id="person">
                         <div class="form-group col-sm-12">
@@ -58,6 +59,7 @@
     <div class="box box-primary">
         <div class="box-body mb-5">
         {!! Form::open(['url' => action([\App\Http\Controllers\LoanController::class, 'store']), 'method' => 'post', 'id'=>'cotizar_add_form' ]) !!}
+            <input type="hidden" name="type" id="type" value="{{$type}}">
             <div class="row">
                 <div class="col-md-3">
                     <div class="form-group col-sm-12">
@@ -183,7 +185,6 @@
                 </div>
             </div>
             
-            
             <div class="row" >
                 <div class="col-md-3">
                     <div class="form-group ">
@@ -246,8 +247,6 @@
                     </div>
                 </div>
             </div>
-
-
 
             <div class="row">
                 <div class="col-md-3">
@@ -339,8 +338,6 @@
     
             <hr>
 
-    
-    
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group col-sm-12">
@@ -415,7 +412,6 @@
                 }
             });
             
-       
              $('input[type=radio][name=option_seguro]').on('ifChecked', function(){
                 if ($(this).val() == 1) {
                     $("#insurance").show();

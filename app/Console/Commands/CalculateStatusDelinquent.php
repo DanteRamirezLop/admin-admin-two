@@ -60,11 +60,10 @@ class CalculateStatusDelinquent extends Command
                     ->where('svx.status', 'active')
                     ->exists();
 
-                // Traer SOLO cuotas overdue del cronograma correcto (activo o NULL)
                 $letra_pagos = PaymentSchedule::query()
                     ->from('payment_schedules as ps')
                     ->leftJoin('schedule_versions as sv', 'sv.id', '=', 'ps.schedule_version_id')
-                    ->where('ps.loan_id', $prestamo->id)          // ✅ CRÍTICO: filtrar por préstamo
+                    ->where('ps.loan_id', $prestamo->id)          
                     ->where('ps.status', 'overdue')
                     ->when(
                         $hasActiveVersion,

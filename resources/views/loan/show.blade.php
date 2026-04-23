@@ -5,7 +5,17 @@
 
 <!-- Content Header (Page header) -->
 <section class="content-header">
-    <h1><a href="/loans"> <span class="fa fa-arrow-left"></span> @lang( 'messages.back' )</a></h1>
+    <h1>
+        @if($loan->type == 'sale')
+            <a href="/loans"> 
+                <span class="fa fa-arrow-left"></span> @lang( 'messages.back' )
+            </a>
+        @else
+            <a href="/loan/list-rent-sale">
+                <span class="fa fa-arrow-left"></span> @lang( 'messages.back' ) 
+            </a>
+        @endif
+    </h1>
 </section>
 
 <!-- Main content -->

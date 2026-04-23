@@ -11,6 +11,12 @@
 <!-- Main content -->
 <section class="content">
 
+	<!-- Page level currency setting -->
+	<input type="hidden" id="p_code" value="{{$currency_details->code}}">
+	<input type="hidden" id="p_symbol" value="{{$currency_details->symbol}}">
+	<input type="hidden" id="p_thousand" value="{{$currency_details->thousand_separator}}">
+	<input type="hidden" id="p_decimal" value="{{$currency_details->decimal_separator}}">
+
 	@include('layouts.partials.error')
 
 	{!! Form::open(['url' => action([\App\Http\Controllers\PurchaseOrderController::class, 'store']), 'method' => 'post', 'id' => 'add_purchase_form', 'files' => true ]) !!}
@@ -75,16 +81,43 @@
 					</div>
 				</div>
 
+
+				<div class="col-sm-2">
+					<div class="form-group">
+						{!! Form::label('document', __('purchase.attach_document') . ':') !!}
+						{!! Form::file('document', ['id' => 'upload_document', 'accept' => implode(',', array_keys(config('constants.document_upload_mimes_types')))]); !!}
+						<p class="help-block">
+							@lang('purchase.max_file_size', ['size' => (config('constants.document_size_limit') / 1000000)])
+							<!-- @includeIf('components.document_help_text') -->
+						</p>
+					</div>
+				</div>
+
 				<div class="@if(!empty($default_purchase_status)) col-sm-4 @else col-sm-2 @endif">
 					<div class="form-group">
 						{!! Form::label('custom_field_3', 'Forma de pago:*') !!}
 						{!! Form::select('custom_field_3',['0'=>'Contado','10'=>'Credito 10%','15'=>'Credito 15%','20'=>'Credito 20%','30'=>'Credito 30%','50'=>'Credito 50%'], null, ['class' => 'form-control','placeholder' => __('messages.please_select'), 'required']); !!}
 					</div>
 				</div>
+				
 				<div class="@if(!empty($default_purchase_status)) col-sm-4 @else col-sm-2 @endif">
 					<div class="form-group">
 						{!! Form::label('custom_field_1', 'Tipo de proceso:*') !!}
-						{!! Form::select('custom_field_1',['Compra Nacional'=>'Compra Nacional','Compra Internacional'=>'Compra Internacional'], null, ['class' => 'form-control','placeholder' => __('messages.please_select'), 'required']); !!}
+						{!! Form::select('custom_field_1',['Compra Nacional'=>'Compra Nacional','Compra Internacional'=>'Compra Internacional','Servicios'=>'Servicios'], null, ['class' => 'form-control', 'id' => 'custom_field_1', 'placeholder' => __('messages.please_select'), 'required']); !!}
+					</div>
+				</div>
+
+				<div class="col-sm-2 hide" id="detraccion_row">
+					<div class="form-group">
+						{!! Form::label('service_custom_field_1', 'Afecto a detracción:') !!}
+						{!! Form::select('service_custom_field_1', ['no' => 'No', 'si' => 'Sí'], 'no', ['class' => 'form-control', 'id' => 'service_custom_field_1']); !!}
+					</div>
+				</div>
+
+				<div class="col-sm-2 hide" id="service_custom_field_2_row">
+					<div class="form-group">
+						{!! Form::label('service_custom_field_2', 'Porcentaje detracción (%):') !!}
+						{!! Form::number('service_custom_field_2', null, ['class' => 'form-control', 'id' => 'service_custom_field_2', 'min' => 1, 'max' => 100, 'placeholder' => 'Ej: 12']); !!}
 					</div>
 				</div>
 
@@ -121,16 +154,6 @@
 					</div>
 				</div> -->
 
-				<div class="col-sm-2">
-					<div class="form-group">
-						{!! Form::label('document', __('purchase.attach_document') . ':') !!}
-						{!! Form::file('document', ['id' => 'upload_document', 'accept' => implode(',', array_keys(config('constants.document_upload_mimes_types')))]); !!}
-						<p class="help-block">
-							@lang('purchase.max_file_size', ['size' => (config('constants.document_size_limit') / 1000000)])
-							@includeIf('components.document_help_text')
-						</p>
-					</div>
-				</div>
 			</div>
 			@if(!empty($common_settings['enable_purchase_requisition']))
 			<div class="row">
@@ -302,12 +325,6 @@
         		}
         	@endphp
 
-        	<!-- <div class="col-md-4">
-		        <div class="form-group">
-		            {!! Form::label('shipping_custom_field_1', $label_1 ) !!}
-		            {!! Form::text('shipping_custom_field_1', null, ['class' => 'form-control','placeholder' => $shipping_custom_label_1, 'required' => $is_shipping_custom_field_1_required]); !!}
-		        </div>
-		    </div> -->
         @endif
         @if(!empty($shipping_custom_label_2))
         	@php
@@ -537,6 +554,28 @@
 			if($('#location_id').length){
 				$('#location_id').change();
 			}
+
+			// Detracción logic
+			$('#custom_field_1').on('change', function() {
+				if ($(this).val() === 'Servicios') {
+					$('#detraccion_row').removeClass('hide');
+				} else {
+					$('#detraccion_row').addClass('hide');
+					$('#service_custom_field_2_row').addClass('hide');
+					$('#service_custom_field_1').val('no');
+					$('#service_custom_field_2').val('').removeAttr('required');
+				}
+			});
+
+			$('#service_custom_field_1').on('change', function() {
+				if ($(this).val() === 'si') {
+					$('#service_custom_field_2_row').removeClass('hide');
+					$('#service_custom_field_2').attr('required', true);
+				} else {
+					$('#service_custom_field_2_row').addClass('hide');
+					$('#service_custom_field_2').val('').removeAttr('required');
+				}
+			});
     	});
 	</script>
 	@include('purchase.partials.keyboard_shortcuts')

@@ -9,7 +9,7 @@
 </section>
 <!-- Main content -->
 <section class="content no-print">
-    <input type="hidden" value="{{$type}}" id="loan_type">
+    <input type="hidden" value="{{$loan_type}}" id="loan_type">
         <!-- Nueva tabla -->
         @component('components.widget', ['class' => 'box-primary', 'title' => __( 'loan.all_loand' )])
             @can('customer.view_own')
@@ -82,12 +82,12 @@
 @section('javascript')
 <script type="text/javascript">
 $(document).ready( function(){
-
+     var url = window.location.href; //URL ACTUAL /loans ó  /loan/list-rent-sale
      loan_table = $('#loan_table').DataTable({
         processing: true,
         serverSide: true,
         aaSorting: [[1, 'desc']],
-        ajax: '/loans',
+        ajax: url,
         columnDefs: [
             {
                 targets: 3,

@@ -259,11 +259,13 @@ Route::middleware(['setData', 'auth', 'SetSessionData', 'language', 'timezone', 
     Route::post('/prices',[App\Http\Controllers\CotizarController::class,'prices']);
     Route::post('/confi-initial',[App\Http\Controllers\CotizarController::class,'initial']);
     Route::post('/check-sunat',[App\Http\Controllers\CotizarController::class,'checkCustomerSunat'])->name('check_sunat');
-    //--------
-   //Prestamos----------
+  
+    //Prestamos
     Route::resource('/loans', LoanController::class);
+    Route::get('/loan/list-rent-sale', [LoanController::class,'listRentSale'])->name('rent.sale.loan'); 
+   
+   
     Route::get('/laon/addPayment/{payment_schedules_id}', [LoanController::class,'addPayment'])->name('add.pay.loan');
-    
     Route::get('/loan/addCapital/{loan_id}/{type}', [LoanController::class,'addCapital'])->name('add.capital.loan');
     Route::post('/pay-capital',[LoanPaymentController::class,'payCapital'])->name('pay.capital');
     

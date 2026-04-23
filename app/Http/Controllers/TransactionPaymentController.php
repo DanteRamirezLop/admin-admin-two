@@ -386,7 +386,6 @@ class TransactionPaymentController extends Controller
                     $payment->save();
                 }
 
-
                 //ELIMINACION DE LA TRANSACCION PROPIAMENTE DICHA 
                 if (! empty($payment->transaction_id)) {
                     //Eliminacion de pago normal

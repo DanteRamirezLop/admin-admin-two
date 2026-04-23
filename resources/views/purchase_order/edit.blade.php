@@ -124,12 +124,14 @@
                     <option value="Compra Internacional" @if($purchase->custom_field_1 == 'Compra Internacional') selected @endif>
                         Compra Internacional
                     </option>
+                    <option value="Servicios" @if($purchase->custom_field_1 == 'Servicios') selected @endif>
+                        Servicios
+                    </option>
                   </select>
               </div>
             </div>
-            
-            
-               <div class="@if(!empty($default_purchase_status)) col-sm-4 @else col-sm-2 @endif">
+
+            <div class="@if(!empty($default_purchase_status)) col-sm-4 @else col-sm-2 @endif">
               <div class="form-group">
                   {!! Form::label('custom_field_3', 'Tipo de proceso:*') !!}
                   <select name="custom_field_3" id="custom_field_3" class="form-control" style="width: 100%;" required>
@@ -163,6 +165,26 @@
                     @includeIf('components.document_help_text')</p>
                 </div>
             </div>
+
+            <div class="col-sm-2 @if($purchase->custom_field_1 != 'Servicios') hide @endif" id="detraccion_row">
+                <div class="form-group">
+                    {!! Form::label('service_custom_field_1', 'Afecto a detracción:') !!}
+                    <select name="service_custom_field_1" id="service_custom_field_1" class="form-control">
+                        <option value="no" @if($purchase->service_custom_field_1 != 'si') selected @endif>No</option>
+                        <option value="si" @if($purchase->service_custom_field_1 == 'si') selected @endif>Sí</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-sm-2 @if($purchase->service_custom_field_1 != 'si') hide @endif" id="detraccion_porcentaje_row">
+                <div class="form-group">
+                    {!! Form::label('service_custom_field_2', 'Porcentaje detracción (%):') !!}
+                    {!! Form::number('service_custom_field_2', $purchase->service_custom_field_2, ['class' => 'form-control', 'id' => 'service_custom_field_2', 'min' => 1, 'max' => 100, 'placeholder' => 'Ej: 12', ($purchase->service_custom_field_1 == 'si' ? 'required' : '')]); !!}
+                </div>
+            </div>
+            
+            
+               
             
         </div>
         @if(!empty($common_settings['enable_purchase_requisition']))
@@ -584,6 +606,28 @@
             showPreview: false,
             browseLabel: LANG.file_browse_label,
             removeLabel: LANG.remove,
+        });
+
+        // Detracción logic
+        $('#custom_field_1').on('change', function() {
+            if ($(this).val() === 'Servicios') {
+                $('#detraccion_row').removeClass('hide');
+            } else {
+                $('#detraccion_row').addClass('hide');
+                $('#detraccion_porcentaje_row').addClass('hide');
+                $('#service_custom_field_1').val('no');
+                $('#service_custom_field_2').val('').removeAttr('required');
+            }
+        });
+
+        $('#service_custom_field_1').on('change', function() {
+            if ($(this).val() === 'si') {
+                $('#detraccion_porcentaje_row').removeClass('hide');
+                $('#service_custom_field_2').attr('required', true);
+            } else {
+                $('#detraccion_porcentaje_row').addClass('hide');
+                $('#service_custom_field_2').val('').removeAttr('required');
+            }
         });
     });
   </script>

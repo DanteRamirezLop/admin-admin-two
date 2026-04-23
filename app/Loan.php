@@ -12,8 +12,8 @@ use Carbon\Carbon;
 
 class Loan extends Model
 {
-
     //Loands status = ['quotation','approved','partial','in arrears','cancelled','paid']
+    //LOANDS TYPE = ['sale','rent-sale']
     use HasFactory;
     protected $table = 'loans';
     protected $fillable = [
@@ -24,17 +24,19 @@ class Loan extends Model
         'status',
         'product_name',
         'date',
-        'type_product',
-        'period',
-        'number_month',
-        'multiplier',
-        'rate',
-        'amount',
-        'admin_fee',
+        'number_month', 
         'quotes',
-		'loan_amount',
-        'gps',
-        'insurance',
+
+        'type_product',// customer_name
+        'period', // type_quotation
+        'multiplier',// annual_interest_rate
+        'rate', //total_amount_interest
+        'amount',// total_cost_loan
+		'loan_amount', //balance_to_financed - Saldo a Financiar
+        'gps', // initial_gps - Inicial GPS
+        'insurance',// initial_insurance - Inicial Seguro
+        'admin_fee', //initial_admin_fee - Inicial Gasto de Administración
+
         'gps_quotes',
         'insurance_quotes',
         'admin_fee_quotes',
@@ -50,7 +52,9 @@ class Loan extends Model
         'initial_fraction',
         'mounth_initial',
         'start_rate',
-        'interest_saved'
+        'interest_saved',
+
+        'type',
     ];
     
    // protected $casts = [

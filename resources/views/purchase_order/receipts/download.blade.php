@@ -204,11 +204,10 @@
                     $total_before_tax = 0.00;
                     $total_tax = 0.00;
                     $credit = (int)  $purchase->custom_field_3;
-                    $total_neto = $purchase->final_total - $three_percent_withholding;
+                    $total_neto = $purchase->final_total - $percent_withholding;
                     $amount_pay = ($total_neto * $credit) /100;
                 @endphp
 
-                               
                 @foreach($purchase->purchase_lines as $key=>$purchase_line)
                 <tr>
                     <td style="width: 5% !important; text-align: center; font-size: 12px;">
@@ -271,18 +270,35 @@
                     <td style="text-align: center; font-size: 13px;" colspan="2"><b>Total</b></td> 
                      <td colspan="2" style="width: 10% !important; text-align: center; font-size: 12px;">@format_currency($purchase->final_total)</td>
                 </tr>
-                @if($three_percent_withholding)
-                <tr>
-                    <td style="text-align: center; font-size: 12px;" colspan="2">
-                        retencióm minima de  S/.700 con tipo de cambio SUNAT.  <b>Venta: {{number_format($exchange_rate_purchase,3)}}</b> 
-                    </td>
-                    <td style="text-align: center; font-size: 13px;"colspan="2">
-                        <b>Retención 3%</b> 
-                    </td> 
-                    <td style="width: 10% !important; text-align: center; font-size: 12px;" colspan="2">
-                       @format_currency($three_percent_withholding)
-                    </td>
-                </tr>
+
+
+                @if($purchase->service_custom_field_1 == 'si')
+                    <tr>
+                        <td style="text-align: center; font-size: 12px;" colspan="2">
+                        </td>
+                        <td style="text-align: center; font-size: 13px;"colspan="2">
+                            <b>Retención {{$purchase->service_custom_field_2 }} %</b>  
+                        </td> 
+                        <td style="width: 10% !important; text-align: center; font-size: 12px;" colspan="2">
+                        @format_currency($percent_withholding)
+                        </td>
+                    </tr>
+                @else
+                    @if($purchase->custom_field_1 != 'Servicios')
+                        @if($percent_withholding)
+                            <tr>
+                                <td style="text-align: center; font-size: 12px;" colspan="2">
+                                    retencióm minima de  S/.700 con tipo de cambio SUNAT.  <b>Venta: {{number_format($exchange_rate_purchase,3)}}</b> 
+                                </td>
+                                <td style="text-align: center; font-size: 13px;"colspan="2">
+                                    <b>Retención 3%</b>  
+                                </td> 
+                                <td style="width: 10% !important; text-align: center; font-size: 12px;" colspan="2">
+                                @format_currency($percent_withholding)
+                                </td>
+                            </tr>
+                        @endif
+                    @endif
                 @endif
                 <tr>
                     <td colspan="2"></td>

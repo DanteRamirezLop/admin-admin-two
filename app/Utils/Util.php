@@ -61,7 +61,6 @@ class Util
     {
         $thousand_separator = ! empty($business_details) ? $business_details->thousand_separator : session('currency')['thousand_separator'];
         $decimal_separator = ! empty($business_details) ? $business_details->decimal_separator : session('currency')['decimal_separator'];
-
         $currency_precision = ! empty($business_details) ? $business_details->currency_precision : session('business.currency_precision', 2);
 
         if ($is_quantity) {
@@ -121,9 +120,7 @@ class Util
         if ($base == 0) {
             return 0;
         }
-
         $diff = $number - $base;
-
         return ($diff / $base) * 100;
     }
 
@@ -370,11 +367,9 @@ class Util
 			$prefijo = '';
 			if($type=='draft'){
 				$prefijo = 'LIBRA';
-			} else
-			{
+			} else{
 				$prefijo = \Carbon::now()->year;
 			}
-            
             $ref_number = $prefijo.'-'.$ref_digits;
         } else {
             $ref_number = $prefix.$ref_digits;

@@ -119,7 +119,6 @@
 @section('javascript')
     <script src="{{ asset('js/product.js?v=' . $asset_v) }}"></script>
     <script>
-        
         $(document).on('click', '#terminos_edit', function() {
            var description = tinymce.get("product_description").getContent();
            var id = $("#id_terminos").val();

@@ -37,9 +37,10 @@ class DelayPaymentController extends Controller
         try {
             $note = 'Pago moratorio. ';
             $delay = Delay::find($request->delay_id);
-            $amount_delay = $delay->late_amount;
-            $amount = $request->amount;
+            $amount_delay =  $delay->late_amount;
+            $amount =  (float) $request->amount;
             $type = $request->type_pay;
+
             //El monto a pagar no puede ser superior a la cuota 
             if( round($amount,2) <= round($amount_delay,2) ){
 

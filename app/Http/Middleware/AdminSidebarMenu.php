@@ -321,14 +321,14 @@ class AdminSidebarMenu
                         if (in_array('add_sale', $enabled_modules) && auth()->user()->can('direct_sell.access')) {
                             $sub->url(
                                 action([\App\Http\Controllers\SellController::class, 'create'], ['status' => 'quotation']),
-                                __('lang_v1.add_quotation'),
+                                __('lang_v1.add_quotation').'*****',
                                 ['icon' => 'fa fas fa-plus-circle', 'active' => request()->get('status') == 'quotation']
                             );
                         }
                         if (in_array('add_sale', $enabled_modules) && ($is_admin || auth()->user()->hasAnyPermission(['quotation.view_all', 'quotation.view_own']))) {
                             $sub->url(
                                 action([\App\Http\Controllers\SellController::class, 'getQuotations']),
-                                __('lang_v1.list_quotations'),
+                                __('lang_v1.list_quotations').'******',
                                 ['icon' => 'fa fas fa-pen-square', 'active' => request()->segment(1) == 'sells' && request()->segment(2) == 'quotations']
                             );
                         }
@@ -727,7 +727,7 @@ class AdminSidebarMenu
                              ['icon' => 'fa fas fa-list', 'active' => request()->segment(1) == 'cotizar' && request()->segment(2) == 'create']
                          );
                          
-                           if (auth()->user()->can('business_settings.access')) {
+                        if (auth()->user()->can('business_settings.access')) {
                             $sub->url(
                                 action([\App\Http\Controllers\CotizarController::class, 'confi']),
                                 'Configuraciones',
@@ -771,9 +771,25 @@ class AdminSidebarMenu
                          $sub->url(
                              action([\App\Http\Controllers\LoanController::class, 'create']),
                             __('loan.add_loan'),
-                             ['icon' => 'fa fas fa-list', 'active' => request()->segment(1) == 'loans' && request()->segment(2) == 'create']
+                             ['icon' => 'fa fas fa-list', 'active' => request()->segment(1) == 'loans' && request()->segment(2) == 'create' && request()->get('type') == '']
                          );
                         }
+
+                        $sub->url(
+                            action([\App\Http\Controllers\LoanController::class, 'listRentSale']),
+                            'Lista de alquiler venta',
+                            ['icon' => 'fa fas fa-list', 'active' => request()->segment(1) == 'loan'  && request()->segment(2) == 'list-rent-sale']
+                        );
+
+                        if (auth()->user()->can('user.view') || auth()->user()->can('user.create') || auth()->user()->can('roles.view')){ 
+                         $sub->url(
+                             action([\App\Http\Controllers\LoanController::class, 'create'], ['type' => 'rent-sale']),
+                            'Agregar alquiler venta',
+                            ['icon' => 'fa fas fa-plush-circle', 'active' => request()->get('type') == 'rent-sale']
+                         );
+                        }
+                        
+                        
                      },
                      ['icon' => 'fas fa-coins ']
                  )->order(45);
@@ -859,6 +875,8 @@ class AdminSidebarMenu
                     ['icon' => 'fa fas fa-cog', 'id' => 'tour_step3']
                 )->order(85);
             }
+
+            
         });
 
         //Add menus from modules

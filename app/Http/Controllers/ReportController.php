@@ -1726,6 +1726,8 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    // category_id 
     public function getproductSellReport(Request $request)
     {
         if (! auth()->user()->can('purchase_n_sell_report.view')) {
@@ -2330,6 +2332,8 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    //********* */ name
     public function sellPaymentReport(Request $request)
     {
         if (! auth()->user()->can('purchase_n_sell_report.view')) {
@@ -2360,19 +2364,23 @@ class ReportController extends Controller
                         ->orWhereRaw("EXISTS(SELECT * FROM transaction_payments as tp JOIN transactions ON tp.transaction_id = transactions.id WHERE transactions.type IN ('sell', 'opening_balance') AND transactions.business_id = $business_id AND tp.parent_id=transaction_payments.id $contact_filter2)");
                 })
                 ->select(
-                    DB::raw("IF(transaction_payments.transaction_id IS NULL, 
-                                (SELECT c.name FROM transactions as ts
-                                JOIN contacts as c ON ts.contact_id=c.id 
-                                WHERE ts.id=(
-                                        SELECT tps.transaction_id FROM transaction_payments as tps
-                                        WHERE tps.parent_id=transaction_payments.id LIMIT 1
-                                    )
-                                ),
-                                (SELECT CONCAT(COALESCE(CONCAT(c.supplier_business_name, '<br>'), ''), c.name) FROM transactions as ts JOIN
-                                    contacts as c ON ts.contact_id=c.id
-                                    WHERE ts.id=t.id 
-                                )
-                            ) as customer"),
+                    DB::raw("IF(transaction_payments.transaction_id IS NULL,
+                        (SELECT CONCAT_WS('<br>', NULLIF(ct.supplier_business_name,''), ct.name)
+                            FROM transactions ts
+                            JOIN contacts ct ON ts.contact_id = ct.id
+                            WHERE ts.id = (
+                                SELECT tps.transaction_id
+                                FROM transaction_payments tps
+                                WHERE tps.parent_id = transaction_payments.id
+                                LIMIT 1
+                            )
+                        ),
+                        (SELECT CONCAT_WS('<br>', NULLIF(ct.supplier_business_name,''), ct.name)
+                            FROM transactions ts
+                            JOIN contacts ct ON ts.contact_id = ct.id
+                            WHERE ts.id = t.id
+                        )
+                    ) as customer"),
                     'transaction_payments.amount',
                     'transaction_payments.is_return',
                     'method',
@@ -2415,6 +2423,7 @@ class ReportController extends Controller
             if (! empty($request->get('payment_types'))) {
                 $query->where('transaction_payments.method', $request->get('payment_types'));
             }
+            
 
             return Datatables::of($query)
                  ->editColumn('invoice_no', function ($row) {

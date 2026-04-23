@@ -264,18 +264,20 @@
             <tr>
               <th>{{ __('sale.discount') }}:</th>
               <td><b>(-)</b></td>
+
               <td><div class="pull-right">
-                  
-                     <strong>
-                    <small class="display_currency" @if( $sell->discount_type == 'fixed') data-currency_symbol="true" @endif>{{ $sell->discount_amount }}</small> @if( $sell->discount_type == 'percentage') {{ '%'}} @endif</strong>
+                  <strong>
+                    <small class="display_currency" @if( $sell->discount_type == 'fixed') data-currency_symbol="true" @endif>
+                      {{ $sell->discount_amount }}
+                    </small> 
+                      @if( $sell->discount_type == 'percentage') {{ '%'}} @endif 
                   </strong>
                   <span> 
                       @if(!empty($discount))
-                       -$ {{$discount}}
+                       - {{$discount}} 
                       @endif
                   </span>
-                  
-                  </div></td>
+                </div></td>
             </tr>
             @if(in_array('types_of_service' ,$enabled_modules) && !empty($sell->packing_charge))
               <tr>

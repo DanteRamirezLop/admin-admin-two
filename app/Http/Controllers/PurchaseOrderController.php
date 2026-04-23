@@ -29,9 +29,7 @@ class PurchaseOrderController extends Controller
      * All Utils instance.
      */
     protected $productUtil;
-
     protected $transactionUtil;
-
     protected $moduleUtil;
 
     /**
@@ -307,14 +305,11 @@ class PurchaseOrderController extends Controller
         try {
             $business_id = $request->session()->get('user.business_id');
 
-            //Check if subscribed or not 
-            //status
             if (! $this->moduleUtil->isSubscribed($business_id)) {
                 return $this->moduleUtil->expiredResponse(action([\App\Http\Controllers\PurchaseController::class, 'index']));
             }
 
             $transaction_data = $request->only(['ref_no','contact_id', 'transaction_date', 'total_before_tax', 'location_id', 'discount_type', 'discount_amount', 'tax_id', 'tax_amount', 'shipping_details', 'shipping_charges', 'final_total', 'additional_notes', 'exchange_rate', 'pay_term_number', 'pay_term_type', 'shipping_address', 'shipping_status', 'delivered_to', 'delivery_date', 'purchase_requisition_ids']);
-
             $exchange_rate = $transaction_data['exchange_rate'];
 
             if ($request->has('status')) {
@@ -323,15 +318,24 @@ class PurchaseOrderController extends Controller
                 $transaction_data['status'] = 'ordered';
             }
 
-             if ($request->has('custom_field_1')) {
+            if ($request->has('custom_field_1')) {
                 $transaction_data['custom_field_1'] = $request->input('custom_field_1');
             }
+
              if ($request->has('custom_field_2')) {
                 $transaction_data['custom_field_2'] = $request->input('custom_field_2');
             }
             
-             if ($request->has('custom_field_3')) {
+            if ($request->has('custom_field_3')) {
                 $transaction_data['custom_field_3'] = $request->input('custom_field_3');
+            }
+
+            if ($request->has('service_custom_field_1')) {
+                $transaction_data['service_custom_field_1'] = $request->input('service_custom_field_1');
+            }
+
+            if ($request->has('service_custom_field_2')) {
+                $transaction_data['service_custom_field_2'] = $request->input('service_custom_field_2');
             }
 
             if ($request->has('shipping_custom_field_1')) {
@@ -682,6 +686,8 @@ class PurchaseOrderController extends Controller
             $update_data['custom_field_1'] = $request->has('custom_field_1') ? $request->input('custom_field_1') : null;
             $update_data['custom_field_2'] = $request->has('custom_field_2') ? $request->input('custom_field_2') : null;
             $update_data['custom_field_3'] = $request->has('custom_field_3') ? $request->input('custom_field_3') : null;
+            $update_data['service_custom_field_1'] = $request->has('service_custom_field_1') ? $request->input('service_custom_field_1') : null;
+            $update_data['service_custom_field_2'] = $request->has('service_custom_field_2') ? $request->input('service_custom_field_2') : null;
             $update_data['shipping_custom_field_1'] = $request->has('shipping_custom_field_1') ? $request->input('shipping_custom_field_1') : null;
             $update_data['shipping_custom_field_2'] = $request->has('shipping_custom_field_2') ? $request->input('shipping_custom_field_2') : null;
             $update_data['shipping_custom_field_3'] = $request->has('shipping_custom_field_3') ? $request->input('shipping_custom_field_3') : null;
@@ -879,25 +885,29 @@ class PurchaseOrderController extends Controller
         $date_print = Carbon::now()->format('d/m/Y');
         $date_release = $purchase->transaction_date ? Carbon::parse($purchase->transaction_date)->format('d/m/Y') : null; 
         $date_delivery = $purchase->delivery_date ? Carbon::parse($purchase->delivery_date)->format('d/m/Y') : null;
-        //Texto de Dolares -tax
+        //Texto de Dolares - tax
         $amount = $purchase->final_total;
         $text_amount = $this->montoATexto($amount, 'USD');
 
-        //Obtener rentencion de 3% 
-        $search_date = Carbon::parse($purchase->transaction_date)->format('y-m-d');
-        $exchange_rate = ExchangeRates::where('search_date',$search_date)->first();
-         if($exchange_rate){
-            $exchange_rate_purchase = $exchange_rate->sale;
-            $seven_hundred_usa =  700 / $exchange_rate_purchase; // Seteciento soles convertidos a dolares
-            $three_percente = $purchase->final_total * 0.03;
-            $three_percent_withholding =  ($purchase->final_total >= $seven_hundred_usa) ? $three_percente : 0;
+        $exchange_rate_purchase = 0;
+        $percent_withholding =  0;
+        if($purchase->service_custom_field_1 == 'si'){
+             $exchange_rate_purchase = isset($exchange_rate->sale)? $exchange_rate->sale: 0 ;
+             $percent_withholding =  $purchase->final_total * (int) $purchase->service_custom_field_2 / 100;
         }else{
-            $exchange_rate_purchase = 0;
-            $three_percent_withholding = 0;
+            //Obtener rentencion de 3% 
+            $search_date = Carbon::parse($purchase->transaction_date)->format('y-m-d');
+            $exchange_rate = ExchangeRates::where('search_date',$search_date)->first();
+            if($exchange_rate){
+                $exchange_rate_purchase =  isset($exchange_rate->sale)? $exchange_rate->sale: 0 ;
+                $seven_hundred_usa =  700 / $exchange_rate_purchase; // Seteciento soles convertidos a dolares
+                $three_percente = $purchase->final_total * 0.03;
+                $percent_withholding =  ($purchase->final_total >= $seven_hundred_usa) ? $three_percente : 0;
+            }
         }
-    
+
         //Generate pdf 
-        $pdf = Pdf::set_option('isRemoteEnabled', true)->loadView('purchase_order.receipts.download',compact('exchange_rate_purchase','three_percent_withholding','taxes','location_details','date_delivery','date_release','purchase', 'invoice_layout', 'text_amount','date_print'));
+        $pdf = Pdf::set_option('isRemoteEnabled', true)->loadView('purchase_order.receipts.download',compact('percent_withholding','exchange_rate_purchase','taxes','location_details','date_delivery','date_release','purchase', 'invoice_layout', 'text_amount','date_print'));
         return $pdf->download('Orden-Compra-'.$purchase->ref_no.'.pdf');
     }
 
@@ -930,7 +940,6 @@ class PurchaseOrderController extends Controller
 
         return trim("$textoEntero $nombreMoneda con $textoDecimales centavos");
     }
-
 
     private function numeroATexto($numero) {
         $unidades = [

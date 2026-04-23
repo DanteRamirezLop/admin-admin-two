@@ -75,7 +75,6 @@ function __currency_trans_from_en(
     precision = __currency_precision,
     is_quantity = false
 ) {
-
     if (use_page_currency && __p_currency_symbol) {
         var s = __p_currency_symbol;
         var thousand = __p_currency_thousand_separator;
@@ -111,6 +110,7 @@ function __currency_convert_recursively(element, use_page_currency = false) {
         if (show_symbol == undefined || show_symbol != true) {
             show_symbol = false;
         }
+
         //If data-use_page_currency is present in the element use_page_currency 
         //value will be over written 
         if (typeof $(this).data('use_page_currency') !== 'undefined') {
@@ -131,7 +131,7 @@ function __currency_convert_recursively(element, use_page_currency = false) {
             show_symbol = false;
         }
 
-        //$(this).text(__currency_trans_from_en(value, show_symbol, use_page_currency, __currency_precision, is_quantity));
+        $(this).text(__currency_trans_from_en(value, show_symbol, use_page_currency, __currency_precision, is_quantity));
     });
 }
 

@@ -174,9 +174,6 @@ class TransactionUtil extends Util
     }
 
 
-
-
-
      public function amountToPay(PaymentSchedule $payment_schedule){
         $mount_partial = 0;
         $transactionPayments = TransactionPayment::where('payment_schedule_id', $payment_schedule->id)->get();
@@ -6429,4 +6426,15 @@ class TransactionUtil extends Util
 
         return $mpdf;
     }
+
+    /**
+     * Get pdf content for given
+     * transaction id
+     *
+     * @param  int  $business_id
+     * @param  int  $transaction_id
+     * @return array
+     */
+
+    
 }

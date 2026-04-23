@@ -395,12 +395,13 @@ class SellPosController extends Controller
                 }
 
                 //exchange_rate
-                if (isset($input['exchange_rate']) && $this->transactionUtil->num_uf($input['exchange_rate']) == 0) {
-                    $input['exchange_rate'] = 1;
-                }else{
-                    $input['exchange_rate'] = $input['exchange_rate'] / 10;
-                }
+                // if (isset($input['exchange_rate']) && $this->transactionUtil->num_uf($input['exchange_rate']) == 0) {
+                //     $input['exchange_rate'] = 1;
+                // }else{
+                //     $input['exchange_rate'] = $input['exchange_rate'] / 10;
+                // }
 
+                 $input['exchange_rate'] = 1;
 
                 //Customer group details
                 $contact_id = $request->get('contact_id', null);
@@ -1390,7 +1391,7 @@ class SellPosController extends Controller
                         'location_id' => $input['location_id'],
                         'pos_settings' => $pos_settings,
                     ];
-                    $this->transactionUtil->adjustMappingPurchaseSell($status_before, $transaction, $business, $deleted_lines);
+                    //$this->transactionUtil->adjustMappingPurchaseSell($status_before, $transaction, $business, $deleted_lines);
 
                     //Auto send notification
                     $whatsapp_link = $this->notificationUtil->autoSendNotification($business_id, 'new_sale', $transaction, $transaction->contact);
